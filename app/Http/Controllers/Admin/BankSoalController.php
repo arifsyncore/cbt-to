@@ -172,12 +172,15 @@ class BankSoalController extends Controller
                     <button type="button" class="btn btn-icon btn-warning btn-fab demo waves-effect waves-light" onclick="edit(' . $data->id . ')">
                         <span class="tf-icons ri-edit-line ri-22px"></span>
                     </button>
+                    <button type="button" class="btn btn-icon btn-danger btn-fab demo waves-effect waves-light" onclick="hapus(' . $data->id . ')">
+                        <span class="tf-icons ri-delete-bin-line ri-22px"></span>
+                    </button>
                     ';
                     return $button;
                 })->rawColumns(['aksi', 'soal', 'opsi'])
                 ->make(true);
         }
-        $bank_soal = MBankSoal::where('id', $request->id)->first();
+        $bank_soal = MBankSoal::with('detail')->where('id', $request->id)->first();
         return view('admin.bank-soal.components.detail', compact(
             'bank_soal'
         ));
@@ -187,10 +190,12 @@ class BankSoalController extends Controller
     {
         try {
             $action = 'add';
+            $title = 'Tambah';
             $bank_soal = MBankSoal::where('id', $request->id)->first();
             $view = view('admin.bank-soal.components.form-detail', compact(
                 'bank_soal',
-                'action'
+                'action',
+                'title'
             ))->render();
             return ['status' => 200, 'data' => $view];
         } catch (\Throwable $th) {
@@ -200,33 +205,6 @@ class BankSoalController extends Controller
 
     public function detailAdd(Request $request)
     {
-        if ($request->soal == '') {
-            return ['status' => 500, 'message' => 'Soal belum diisi'];
-        }
-        if ($request->opsi_a == '') {
-            return ['status' => 500, 'message' => 'Jawaban A belum diisi'];
-        }
-        if ($request->opsi_b == '') {
-            return ['status' => 500, 'message' => 'Jawaban B belum diisi'];
-        }
-        if ($request->opsi_c == '') {
-            return ['status' => 500, 'message' => 'Jawaban C belum diisi'];
-        }
-        $bank_soal = MBankSoal::where('id', $request->id_bank)->first();
-        if ($bank_soal->jml_opsi_jwb == 4) {
-            if ($request->opsi_d == '') {
-                return ['status' => 500, 'message' => 'Jawaban D belum diisi'];
-            }
-        }
-        if ($bank_soal->jml_opsi_jwb == 5) {
-            if ($request->opsi_e == '') {
-                return ['status' => 500, 'message' => 'Jawaban E belum diisi'];
-            }
-        }
-        if ($request->jawaban == '') {
-
-            return ['status' => 500, 'message' => 'Jawaban belum dipilih'];
-        }
         try {
             DB::transaction(function () use ($request) {
                 FuncHelper::dxInsert(new MSoal(), [
@@ -241,7 +219,8 @@ class BankSoalController extends Controller
                     'jawaban' => $request->jawaban,
                 ]);
             });
-            return ['status' => 200, 'message' => 'Berhasil menyimpan data'];
+            $bank_soal = MBankSoal::with('detail')->where('id', $request->id_bank)->first();
+            return ['status' => 200, 'message' => 'Berhasil menyimpan data', 'bank' => $bank_soal];
         } catch (\Throwable $th) {
             return ['status' => 500, 'message' => 'Gagal menyimpan data'];
         }
@@ -264,16 +243,50 @@ class BankSoalController extends Controller
     {
         try {
             $action = 'edit';
-            $bank_soal = MBankSoal::where('id', $request->id)->first();
+            $title = 'Ubah';
+            $bank_soal = MBankSoal::where('id', $request->id_bank)->first();
             $data = MSoal::where('id', $request->id)->first();
             $view = view('admin.bank-soal.components.form-detail', compact(
                 'bank_soal',
                 'action',
+                'title',
                 'data'
             ))->render();
             return ['status' => 200, 'data' => $view];
         } catch (\Throwable $th) {
             return ['status' => 500, 'message' => 'Gagal memuat data'];
+        }
+    }
+
+    public function detailEdit(Request $request)
+    {
+        try {
+            DB::transaction(function () use ($request) {
+                FuncHelper::dxUpdate(new MSoal(), ['id' => $request->id], [
+                    'soal' => $request->soal,
+                    'opsi_a' => $request->opsi_a,
+                    'opsi_b' => $request->opsi_b,
+                    'opsi_c' => $request->opsi_c,
+                    'opsi_d' => $request->opsi_d,
+                    'opsi_e' => $request->opsi_e,
+                    'jawaban' => $request->jawaban,
+                ]);
+            });
+            return ['status' => 200, 'message' => 'Berhasil menyimpan data'];
+        } catch (\Throwable $th) {
+            return ['status' => 500, 'message' => 'Gagal menyimpan data'];
+        }
+    }
+
+    public function detailHapus(Request $request)
+    {
+        try {
+            DB::transaction(function () use ($request) {
+                FuncHelper::dxDelete(new MSoal(), ['id' => $request->id]);
+            });
+            return ['status' => 200, 'message' => 'Berhasil Menghapus Data'];
+        } catch (\Throwable $th) {
+            return ['status' => 500, 'message' => 'Gagal Menghapus Data'];
         }
     }
 }

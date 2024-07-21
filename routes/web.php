@@ -66,7 +66,9 @@ Route::group(['middleware' => ['auth', 'role:1']], function () {
     Route::get('/bank-soal/detail', [BankSoalController::class, 'detail']);
     Route::get('/bank-soal/detail/form', [BankSoalController::class, 'formDetail']);
     Route::post('/bank-soal/detail/add', [BankSoalController::class, 'detailAdd']);
-    Route::get('/bank-soal/detail/edit', [BankSoalController::class, 'editDetail']);
+    Route::get('/bank-soal/detail/form-edit', [BankSoalController::class, 'editDetail']);
+    Route::put('/bank-soal/detail/edit', [BankSoalController::class, 'detailEdit']);
+    Route::delete('/bank-soal/detail/hapus', [BankSoalController::class, 'detailHapus']);
 });
 
 Route::group(['middleware' => ['auth', 'role:2']], function () {

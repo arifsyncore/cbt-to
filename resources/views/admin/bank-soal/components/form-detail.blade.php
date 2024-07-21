@@ -1,282 +1,110 @@
-<form id="form-soal">
-    <input type="hidden" name="id_bank" id="id_bank" value="{{ $bank_soal->id }}">
-    <input type="hidden" name="action" id="action" value="{{ $action }}">
-    <div class="row mb-4">
-        <div class="col-6 col-md-6 col-sm-12 mb-4">
-            <div class="card mb-6">
-                <h5 class="card-header">Soal</h5>
-                <div class="card-body">
-                    <div id="snow-toolbar-soal">
-                        <span class="ql-formats">
-                            <select class="ql-font"></select>
-                            <select class="ql-size"></select>
-                        </span>
-                        <span class="ql-formats">
-                            <button class="ql-bold"></button>
-                            <button class="ql-italic"></button>
-                            <button class="ql-underline"></button>
-                            <button class="ql-strike"></button>
-                        </span>
-                        <span class="ql-formats">
-                            <select class="ql-color"></select>
-                            <select class="ql-background"></select>
-                        </span>
-                        <span class="ql-formats">
-                            <button class="ql-script" value="sub"></button>
-                            <button class="ql-script" value="super"></button>
-                        </span>
-                        <span class="ql-formats">
-                            <button class="ql-header" value="1"></button>
-                            <button class="ql-header" value="2"></button>
-                            <button class="ql-blockquote"></button>
-                            <button class="ql-code-block"></button>
-                        </span>
-                    </div>
-                    <div id="snow-editor-soal"></div>
-                    <input type="hidden" name="soal" id="soal" value="">
+<div class="modal-header">
+    <h4 class="modal-title" id="exampleModalLabel4">{{ $title }} Data Soal</h4>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+<div class="modal-body">
+    <form id="form-soal" onsubmit="return false">
+        @csrf
+        <input type="hidden" name="action" id="action" value="{{ $action }}">
+        <input type="hidden" name="id_bank" id="id_bank" value="{{ $bank_soal->id }}">
+        <input type="hidden" name="id" id="id" value="{{ $action == 'edit' ? $data->id : '' }}">
+        <div class="row">
+            <div class="col-sm-12 col-md-12 col-lg-12 input-soal">
+                <div class="form-floating form-floating-outline mb-6">
+                    <textarea class="form-control h-px-100" name="soal" id="soal" placeholder="Masukkan Soal">{{ $action == 'edit' ? $data->soal : '' }}</textarea>
+                    <label for="soal">Soal</label>
                 </div>
             </div>
-        </div>
-        <div class="col-6 col-md-6 col-sm-12 mb-4">
-            <div class="row mb-4 overflow-scroll" style="max-height:30rem;">
-                <div class="col-12 col-md-12 col-sm-12 mb-2">
-                    <div class="card">
-                        <h5 class="card-header">Jawaban A</h5>
-                        <div class="card-body">
-                            <div id="snow-toolbar-opsi-a">
-                                <span class="ql-formats">
-                                    <select class="ql-font"></select>
-                                    <select class="ql-size"></select>
-                                </span>
-                                <span class="ql-formats">
-                                    <button class="ql-bold"></button>
-                                    <button class="ql-italic"></button>
-                                    <button class="ql-underline"></button>
-                                    <button class="ql-strike"></button>
-                                </span>
-                                <span class="ql-formats">
-                                    <select class="ql-color"></select>
-                                    <select class="ql-background"></select>
-                                </span>
-                                <span class="ql-formats">
-                                    <button class="ql-script" value="sub"></button>
-                                    <button class="ql-script" value="super"></button>
-                                </span>
-                                <span class="ql-formats">
-                                    <button class="ql-header" value="1"></button>
-                                    <button class="ql-header" value="2"></button>
-                                    <button class="ql-blockquote"></button>
-                                    <button class="ql-code-block"></button>
-                                </span>
-                            </div>
-                            <div id="snow-editor-opsi-a"></div>
-                            <input type="hidden" name="opsi_a" id="opsi_a" value="">
+            <div class="divider divider-primary">
+                <div class="divider-text">Jawaban</div>
+            </div>
+            <div class="col-sm-12 col-md-12 col-lg-12">
+                <div class="row">
+                    <div class="col-sm-12 col-md-6 col-lg-6 input-soal">
+                        <div class="form-floating form-floating-outline mb-6">
+                            <textarea class="form-control h-px-100" name="opsi_a" id="opsi_a" placeholder="Masukkan Jawaban A">{{ $action == 'edit' ? $data->opsi_a : '' }}</textarea>
+                            <label for="opsi_a">Jawaban A</label>
                         </div>
                     </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6 input-soal">
+                        <div class="form-floating form-floating-outline mb-6">
+                            <textarea class="form-control h-px-100" name="opsi_b" id="opsi_b" placeholder="Masukkan Jawaban B">{{ $action == 'edit' ? $data->opsi_b : '' }}</textarea>
+                            <label for="opsi_b">Jawaban B</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-12 col-md-6 col-lg-6 input-soal">
+                        <div class="form-floating form-floating-outline mb-6">
+                            <textarea class="form-control h-px-100" name="opsi_c" id="opsi_c" placeholder="Masukkan Jawaban C">{{ $action == 'edit' ? $data->opsi_c : '' }}</textarea>
+                            <label for="opsi_c">Jawaban C</label>
+                        </div>
+                    </div>
+                    @if ($bank_soal->jml_opsi_jwb == 4)
+                        <div class="col-sm-12 col-md-6 col-lg-6 input-soal">
+                            <div class="form-floating form-floating-outline mb-6">
+                                <textarea class="form-control h-px-100" name="opsi_d" id="opsi_d" placeholder="Masukkan Jawaban D">{{ $action == 'edit' ? $data->opsi_d : '' }}</textarea>
+                                <label for="opsi_d">Jawaban D</label>
+                            </div>
+                        </div>
+                    @endif
+
+                    @if ($bank_soal->jml_opsi_jwb == 5)
+                        <div class="col-sm-12 col-md-6 col-lg-6 input-soal">
+                            <div class="form-floating form-floating-outline mb-6">
+                                <textarea class="form-control h-px-100" name="opsi_d" id="opsi_d" placeholder="Masukkan Jawaban D">{{ $action == 'edit' ? $data->opsi_d : '' }}</textarea>
+                                <label for="opsi_d">Jawaban D</label>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-6 col-lg-6 input-soal">
+                            <div class="form-floating form-floating-outline mb-6">
+                                <textarea class="form-control h-px-100" name="opsi_e" id="opsi_e" placeholder="Masukkan Jawaban E">{{ $action == 'edit' ? $data->opsi_e : '' }}</textarea>
+                                <label for="opsi_e">Jawaban D</label>
+                            </div>
+                        </div>
+                    @endif
                 </div>
-                <div class="col-12 col-md-12 col-sm-12 mb-2">
-                    <div class="card">
-                        <h5 class="card-header">Jawaban B</h5>
-                        <div class="card-body">
-                            <div id="snow-toolbar-opsi-b">
-                                <span class="ql-formats">
-                                    <select class="ql-font"></select>
-                                    <select class="ql-size"></select>
-                                </span>
-                                <span class="ql-formats">
-                                    <button class="ql-bold"></button>
-                                    <button class="ql-italic"></button>
-                                    <button class="ql-underline"></button>
-                                    <button class="ql-strike"></button>
-                                </span>
-                                <span class="ql-formats">
-                                    <select class="ql-color"></select>
-                                    <select class="ql-background"></select>
-                                </span>
-                                <span class="ql-formats">
-                                    <button class="ql-script" value="sub"></button>
-                                    <button class="ql-script" value="super"></button>
-                                </span>
-                                <span class="ql-formats">
-                                    <button class="ql-header" value="1"></button>
-                                    <button class="ql-header" value="2"></button>
-                                    <button class="ql-blockquote"></button>
-                                    <button class="ql-code-block"></button>
-                                </span>
-                            </div>
-                            <div id="snow-editor-opsi-b"></div>
-                            <input type="hidden" name="opsi_b" id="opsi_b" value="">
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-md-12 col-sm-12 mb-2">
-                    <div class="card">
-                        <h5 class="card-header">Jawaban C</h5>
-                        <div class="card-body">
-                            <div id="snow-toolbar-opsi-c">
-                                <span class="ql-formats">
-                                    <select class="ql-font"></select>
-                                    <select class="ql-size"></select>
-                                </span>
-                                <span class="ql-formats">
-                                    <button class="ql-bold"></button>
-                                    <button class="ql-italic"></button>
-                                    <button class="ql-underline"></button>
-                                    <button class="ql-strike"></button>
-                                </span>
-                                <span class="ql-formats">
-                                    <select class="ql-color"></select>
-                                    <select class="ql-background"></select>
-                                </span>
-                                <span class="ql-formats">
-                                    <button class="ql-script" value="sub"></button>
-                                    <button class="ql-script" value="super"></button>
-                                </span>
-                                <span class="ql-formats">
-                                    <button class="ql-header" value="1"></button>
-                                    <button class="ql-header" value="2"></button>
-                                    <button class="ql-blockquote"></button>
-                                    <button class="ql-code-block"></button>
-                                </span>
-                            </div>
-                            <div id="snow-editor-opsi-c"></div>
-                            <input type="hidden" name="opsi_c" id="opsi_c" value="">
-                        </div>
-                    </div>
-                </div>
-                @if ($bank_soal->jml_opsi_jwb == 4)
-                    <div class="col-12 col-md-12 col-sm-12 mb-2">
-                        <div class="card">
-                            <h5 class="card-header">Jawaban D</h5>
-                            <div class="card-body">
-                                <div id="snow-toolbar-opsi-d">
-                                    <span class="ql-formats">
-                                        <select class="ql-font"></select>
-                                        <select class="ql-size"></select>
-                                    </span>
-                                    <span class="ql-formats">
-                                        <button class="ql-bold"></button>
-                                        <button class="ql-italic"></button>
-                                        <button class="ql-underline"></button>
-                                        <button class="ql-strike"></button>
-                                    </span>
-                                    <span class="ql-formats">
-                                        <select class="ql-color"></select>
-                                        <select class="ql-background"></select>
-                                    </span>
-                                    <span class="ql-formats">
-                                        <button class="ql-script" value="sub"></button>
-                                        <button class="ql-script" value="super"></button>
-                                    </span>
-                                    <span class="ql-formats">
-                                        <button class="ql-header" value="1"></button>
-                                        <button class="ql-header" value="2"></button>
-                                        <button class="ql-blockquote"></button>
-                                        <button class="ql-code-block"></button>
-                                    </span>
-                                </div>
-                                <div id="snow-editor-opsi-d"></div>
-                                <input type="hidden" name="opsi_d" id="opsi_d" value="">
-                            </div>
-                        </div>
-                    </div>
-                @endif
-                @if ($bank_soal->jml_opsi_jwb == 5)
-                    <div class="col-12 col-md-12 col-sm-12 mb-2">
-                        <div class="card">
-                            <h5 class="card-header">Jawaban D</h5>
-                            <div class="card-body">
-                                <div id="snow-toolbar-opsi-d">
-                                    <span class="ql-formats">
-                                        <select class="ql-font"></select>
-                                        <select class="ql-size"></select>
-                                    </span>
-                                    <span class="ql-formats">
-                                        <button class="ql-bold"></button>
-                                        <button class="ql-italic"></button>
-                                        <button class="ql-underline"></button>
-                                        <button class="ql-strike"></button>
-                                    </span>
-                                    <span class="ql-formats">
-                                        <select class="ql-color"></select>
-                                        <select class="ql-background"></select>
-                                    </span>
-                                    <span class="ql-formats">
-                                        <button class="ql-script" value="sub"></button>
-                                        <button class="ql-script" value="super"></button>
-                                    </span>
-                                    <span class="ql-formats">
-                                        <button class="ql-header" value="1"></button>
-                                        <button class="ql-header" value="2"></button>
-                                        <button class="ql-blockquote"></button>
-                                        <button class="ql-code-block"></button>
-                                    </span>
-                                </div>
-                                <div id="snow-editor-opsi-d"></div>
-                                <input type="hidden" name="opsi_d" id="opsi_d" value="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-12 col-md-12 col-sm-12 mb-2">
-                        <div class="card">
-                            <h5 class="card-header">Jawaban E</h5>
-                            <div class="card-body">
-                                <div id="snow-toolbar-opsi-e">
-                                    <span class="ql-formats">
-                                        <select class="ql-font"></select>
-                                        <select class="ql-size"></select>
-                                    </span>
-                                    <span class="ql-formats">
-                                        <button class="ql-bold"></button>
-                                        <button class="ql-italic"></button>
-                                        <button class="ql-underline"></button>
-                                        <button class="ql-strike"></button>
-                                    </span>
-                                    <span class="ql-formats">
-                                        <select class="ql-color"></select>
-                                        <select class="ql-background"></select>
-                                    </span>
-                                    <span class="ql-formats">
-                                        <button class="ql-script" value="sub"></button>
-                                        <button class="ql-script" value="super"></button>
-                                    </span>
-                                    <span class="ql-formats">
-                                        <button class="ql-header" value="1"></button>
-                                        <button class="ql-header" value="2"></button>
-                                        <button class="ql-blockquote"></button>
-                                        <button class="ql-code-block"></button>
-                                    </span>
-                                </div>
-                                <div id="snow-editor-opsi-e"></div>
-                                <input type="hidden" name="opsi_e" id="opsi_e" value="">
-                            </div>
-                        </div>
-                    </div>
-                @endif
-                <div class="col-12 col-md-12 col-sm-12 mb-2">
-                    <select class="form-control" name="jawaban" id="jawaban" data-style="btn-default">
+            </div>
+            <div class="divider divider-primary">
+                <div class="divider-text">Jawaban Benar</div>
+            </div>
+            <div class="col-sm-6 col-md-6 col-lg-6 input-soal">
+                <div class="form-floating form-floating-outline mb-6">
+                    <select class="form-select" id="jawaban" name="jawaban" aria-label="Default select example">
                         <option value="">Pilih Jawaban</option>
-                        <option value="A">A</option>
-                        <option value="B">B</option>
-                        <option value="C">C</option>
+                        <option value="A"{{ $action == 'edit' ? ($data->jawaban == 'A' ? 'selected' : '') : '' }}>
+                            A
+                        </option>
+                        <option value="B"{{ $action == 'edit' ? ($data->jawaban == 'B' ? 'selected' : '') : '' }}>
+                            B</option>
+                        <option value="C"{{ $action == 'edit' ? ($data->jawaban == 'C' ? 'selected' : '') : '' }}>
+                            C</option>
                         @if ($bank_soal->jml_opsi_jwb == 4)
-                            <option value="D">D</option>
+                            <option
+                                value="D"{{ $action == 'edit' ? ($data->jawaban == 'D' ? 'selected' : '') : '' }}>
+                                D</option>
                         @endif
                         @if ($bank_soal->jml_opsi_jwb == 5)
-                            <option value="D">D</option>
-                            <option value="E">E</option>
+                            <option
+                                value="D"{{ $action == 'edit' ? ($data->jawaban == 'D' ? 'selected' : '') : '' }}>
+                                D</option>
+                            <option
+                                value="E"{{ $action == 'edit' ? ($data->jawaban == 'E' ? 'selected' : '') : '' }}>
+                                E</option>
                         @endif
                     </select>
+                    <label for="jawaban">Jawaban</label>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="text-end">
-        @if ($action == 'edit')
-            <button type="submit" class="btn btn-primary data-submit me-sm-4 me-1">Simpan</button>
-            <button type="submit" class="btn btn-danger data-submit me-sm-4 me-1">Batal</button>
-        @else
-            <button type="submit" class="btn btn-primary data-submit me-sm-4 me-1">Simpan</button>
-        @endif
-    </div>
-</form>
+        <hr>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary waves-effect" data-bs-dismiss="modal">
+                Batal
+            </button>
+            @if ($action == 'edit')
+                <button type="submit" class="btn btn-warning waves-effect waves-light">Simpan</button>
+            @else
+                <button type="submit" class="btn btn-primary waves-effect waves-light">Simpan</button>
+            @endif
+        </div>
+    </form>
+</div>

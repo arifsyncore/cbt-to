@@ -2,14 +2,7 @@
 
 @section('title', 'Bank Soal')
 @section('css')
-    <link rel="stylesheet" href="{{ asset('/assets/vendor/libs/quill/typography.css') }}" />
-    <link rel="stylesheet" href="{{ asset('/assets/vendor/libs/quill/katex.css') }}" />
-    <link rel="stylesheet" href="{{ asset('/assets/vendor/libs/quill/editor.css') }}" />
-    <style>
-        .ql-snow .ql-editor {
-            min-height: 50px;
-        }
-    </style>
+
 @endsection
 @section('content')
     <input type="hidden" name="bank_id" id="bank_id" value="{{ $bank_soal->id }}">
@@ -31,22 +24,52 @@
                                             <td>Nama Soal</td>
                                             <td>{{ $bank_soal->nama_soal }}</td>
                                         </tr>
+                                        <tr>
+                                            <td>Total Harus Dibuat</td>
+                                            <td>{{ round($bank_soal->jml_soal) }} Soal</td>
+                                        </tr>
                                     </tbody>
                                 </table>
                             </div>
                         </div>
+                        <div class="col-4 col-md-4 col-sm-4 mb-4">
+                            @if ($bank_soal->detail->count() >= $bank_soal->jml_soal)
+                                <div class="indikator">
+                                    <div class="card bg-success text-white">
+                                        <div class="card-header text-white text-center">Pembuatan Soal Selesai</div>
+                                        <div class="card-body">
+                                            <h3 class="card-title text-white text-center font-weight-bold">Selesai</h3>
+                                            <p class="card-text text-center">Soal sudah cukup dan siap digunakan</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            @else
+                                <div class="indikator">
+                                    <div class="card bg-danger text-white">
+                                        <div class="card-header text-white text-center">Pembuatan Soal Belum Selesai</div>
+                                        <div class="card-body">
+                                            <h3 class="card-title text-white text-center font-weight-bold">Belum Selesai
+                                            </h3>
+                                            <p class="card-text text-center">Soal sudah belum siap digunakan</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
                     </div>
                     <hr>
-                    <div id="form-content">
+                    <div class="text-end">
+                        <button type="button" class="btn btn btn-primary waves-effect waves-light" onclick="formDetail()">
+                            <span class="tf-icons ri-add-line ri-16px me-sm-2"></span>Tambah Soal
+                        </button>
                     </div>
-                    <hr>
                     <div class="card-datatable table-responsive pt-0">
                         <table class="table-soal table table-bordered">
                             <col style="width: 5%;">
-                            <col style="width: 40%;">
+                            <col style="width: 30%;">
                             <col style="width: 40%;">
                             <col style="width: 10%;">
-                            <col style="width: 5%;">
+                            <col style="width: 15%;">
                             <thead>
                                 <tr>
                                     <th>No</th>
@@ -58,6 +81,16 @@
                             </thead>
                         </table>
                     </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="form-detail-soal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div id="content-form">
+
                 </div>
             </div>
         </div>
