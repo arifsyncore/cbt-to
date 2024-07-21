@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Helpers\FuncHelper;
 use App\Http\Controllers\Controller;
+use App\Models\admin\MJadwal;
+use App\Models\admin\MJenis;
 use App\Models\admin\MJenisUjian;
 use App\Models\admin\MSoal;
 use App\Models\MBankSoal;
@@ -51,10 +53,12 @@ class BankSoalController extends Controller
         $action = 'add';
         $title = 'Tambah';
         $jenis_soals = MJenisUjian::all();
+        $types = MJenis::all();
         return view('admin.bank-soal.components.form', compact(
             'action',
             'title',
-            'jenis_soals'
+            'jenis_soals',
+            'types'
         ));
     }
 
@@ -65,13 +69,23 @@ class BankSoalController extends Controller
     {
         try {
             DB::transaction(function () use ($request) {
-                FuncHelper::dxInsert(new MBankSoal(), [
+                $bank_soal = FuncHelper::dxInsert(new MBankSoal(), [
                     'id_jenis' => $request->jenis_soal,
                     'nama_soal' => $request->nama,
                     'kode' => $request->kode,
                     'jml_soal' => $request->jml_soal,
                     'bobot_soal' => $request->bobot_soal,
                     'jml_opsi_jwb' => $request->opsi_jawab,
+                ]);
+
+                FuncHelper::dxInsert(new MJadwal(), [
+                    'id_jenis' => $request->tipe,
+                    'id_bank_soal' => $bank_soal->id,
+                    'tanggal_mulai' => $request->tanggal_mulai,
+                    'tanggal_selesai' => $request->tanggal_selesai,
+                    'durasi' => $request->durasi,
+                    'acak_soal' => $request->acak_soal,
+                    'acak_opsi' => $request->acak_opsi,
                 ]);
             });
             return ['status' => 200, 'message' => 'Berhasil menyimpan data'];
@@ -96,11 +110,13 @@ class BankSoalController extends Controller
         $action = 'edit';
         $title = 'Edit';
         $jenis_soals = MJenisUjian::all();
-        $data = MBankSoal::where('id', $request->id)->first();
+        $types = MJenis::all();
+        $data = MBankSoal::with('jadwal')->where('id', $request->id)->first();
         return view('admin.bank-soal.components.form', compact(
             'action',
             'title',
             'jenis_soals',
+            'types',
             'data'
         ));
     }
@@ -120,6 +136,15 @@ class BankSoalController extends Controller
                     'bobot_soal' => $request->bobot_soal,
                     'jml_opsi_jwb' => $request->opsi_jawab,
                 ]);
+
+                FuncHelper::dxUpdate(new MJadwal(), ['id' => $request->id_jadwal], [
+                    'id_jenis' => $request->tipe,
+                    'tanggal_mulai' => $request->tanggal_mulai,
+                    'tanggal_selesai' => $request->tanggal_selesai,
+                    'durasi' => $request->durasi,
+                    'acak_soal' => $request->acak_soal,
+                    'acak_opsi' => $request->acak_opsi,
+                ]);
             });
             return ['status' => 200, 'message' => 'Berhasil mengubah data'];
         } catch (\Throwable $th) {
@@ -135,6 +160,8 @@ class BankSoalController extends Controller
         try {
             DB::transaction(function () use ($request) {
                 FuncHelper::dxDelete(new MBankSoal(), ['id' => $request->id]);
+                FuncHelper::dxDelete(new MJadwal(), ['id_bank_soal' => $request->id]);
+                FuncHelper::dxDelete(new MSoal(), ['id_bank_soal' => $request->id]);
             });
             return ['status' => 200, 'message' => 'Berhasil Menghapus Data'];
         } catch (\Throwable $th) {

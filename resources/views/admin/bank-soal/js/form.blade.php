@@ -45,6 +45,34 @@
                             }
                         }
                     },
+                    tipe: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Tipe Soal harus dipilih'
+                            }
+                        }
+                    },
+                    tanggal_mulai: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Tanggal Mulai harus diisi'
+                            }
+                        }
+                    },
+                    tanggal_selesai: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Tanggal Selesai harus diisi'
+                            }
+                        }
+                    },
+                    durasi: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Durasi harus diisi'
+                            }
+                        }
+                    },
                 },
                 plugins: {
                     trigger: new FormValidation.plugins.Trigger(),
@@ -67,6 +95,23 @@
             .on('core.form.valid', function() {
                 saveForm()
             })
+
+        var tglMulai = document.querySelector('#tanggal_mulai')
+        var tglSelesai = document.querySelector('#tanggal_selesai')
+
+        if (tglMulai) {
+            tglMulai.flatpickr({
+                enableTime: true,
+                dateFormat: 'Y-m-d H:i'
+            });
+        }
+
+        if (tglSelesai) {
+            tglSelesai.flatpickr({
+                enableTime: true,
+                dateFormat: 'Y-m-d H:i'
+            });
+        }
     })
 
     function saveForm() {

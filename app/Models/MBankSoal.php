@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\admin\MJadwal;
 use App\Models\admin\MJenisUjian;
 use App\Models\admin\MSoal;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -23,5 +24,10 @@ class MBankSoal extends Model
     public function detail()
     {
         return $this->hasMany(MSoal::class, 'id_bank_soal', 'id', 'id');
+    }
+
+    public function jadwal()
+    {
+        return $this->hasOne(MJadwal::class, 'id_bank_soal', 'id', 'id');
     }
 }

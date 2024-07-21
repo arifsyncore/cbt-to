@@ -84,5 +84,11 @@
                 <div data-i18n="Bank Soal">Bank Soal</div>
             </a>
         </li>
+        {{-- <li class="menu-item {{ Request::is('jadwal') ? 'active' : '' }}">
+            <a href="{{ route('jadwal') }}" class="menu-link">
+                <i class="menu-icon tf-icons ri-calendar-2-line"></i>
+                <div data-i18n="Jadwal">Jadwal</div>
+            </a>
+        </li> --}}
     </ul>
 </aside>
