@@ -84,11 +84,11 @@
                 <div data-i18n="Bank Soal">Bank Soal</div>
             </a>
         </li>
-        {{-- <li class="menu-item {{ Request::is('jadwal') ? 'active' : '' }}">
-            <a href="{{ route('jadwal') }}" class="menu-link">
-                <i class="menu-icon tf-icons ri-calendar-2-line"></i>
-                <div data-i18n="Jadwal">Jadwal</div>
+        <li class="menu-item {{ Request::is('upload-soal') ? 'active' : '' }}">
+            <a href="{{ route('upload-soal') }}" class="menu-link">
+                <i class="menu-icon tf-icons ri-upload-2-fill"></i>
+                <div data-i18n="Post Soal">Post Soal</div>
             </a>
-        </li> --}}
+        </li>
     </ul>
 </aside>

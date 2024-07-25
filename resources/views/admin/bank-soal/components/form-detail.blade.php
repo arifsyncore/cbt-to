@@ -57,7 +57,7 @@
                         <div class="col-sm-12 col-md-6 col-lg-6 input-soal">
                             <div class="form-floating form-floating-outline mb-6">
                                 <textarea class="form-control h-px-100" name="opsi_e" id="opsi_e" placeholder="Masukkan Jawaban E">{{ $action == 'edit' ? $data->opsi_e : '' }}</textarea>
-                                <label for="opsi_e">Jawaban D</label>
+                                <label for="opsi_e">Jawaban E</label>
                             </div>
                         </div>
                     @endif

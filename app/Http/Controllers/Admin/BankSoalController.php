@@ -69,23 +69,13 @@ class BankSoalController extends Controller
     {
         try {
             DB::transaction(function () use ($request) {
-                $bank_soal = FuncHelper::dxInsert(new MBankSoal(), [
+                FuncHelper::dxInsert(new MBankSoal(), [
                     'id_jenis' => $request->jenis_soal,
                     'nama_soal' => $request->nama,
                     'kode' => $request->kode,
                     'jml_soal' => $request->jml_soal,
                     'bobot_soal' => $request->bobot_soal,
                     'jml_opsi_jwb' => $request->opsi_jawab,
-                ]);
-
-                FuncHelper::dxInsert(new MJadwal(), [
-                    'id_jenis' => $request->tipe,
-                    'id_bank_soal' => $bank_soal->id,
-                    'tanggal_mulai' => $request->tanggal_mulai,
-                    'tanggal_selesai' => $request->tanggal_selesai,
-                    'durasi' => $request->durasi,
-                    'acak_soal' => $request->acak_soal,
-                    'acak_opsi' => $request->acak_opsi,
                 ]);
             });
             return ['status' => 200, 'message' => 'Berhasil menyimpan data'];
@@ -136,15 +126,6 @@ class BankSoalController extends Controller
                     'bobot_soal' => $request->bobot_soal,
                     'jml_opsi_jwb' => $request->opsi_jawab,
                 ]);
-
-                FuncHelper::dxUpdate(new MJadwal(), ['id' => $request->id_jadwal], [
-                    'id_jenis' => $request->tipe,
-                    'tanggal_mulai' => $request->tanggal_mulai,
-                    'tanggal_selesai' => $request->tanggal_selesai,
-                    'durasi' => $request->durasi,
-                    'acak_soal' => $request->acak_soal,
-                    'acak_opsi' => $request->acak_opsi,
-                ]);
             });
             return ['status' => 200, 'message' => 'Berhasil mengubah data'];
         } catch (\Throwable $th) {
@@ -160,7 +141,6 @@ class BankSoalController extends Controller
         try {
             DB::transaction(function () use ($request) {
                 FuncHelper::dxDelete(new MBankSoal(), ['id' => $request->id]);
-                FuncHelper::dxDelete(new MJadwal(), ['id_bank_soal' => $request->id]);
                 FuncHelper::dxDelete(new MSoal(), ['id_bank_soal' => $request->id]);
             });
             return ['status' => 200, 'message' => 'Berhasil Menghapus Data'];

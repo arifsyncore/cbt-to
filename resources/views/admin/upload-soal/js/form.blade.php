@@ -1,47 +1,50 @@
 <script>
+    var selectSoal = $('.soal-select')
+    var tglMulai = document.querySelector('#tanggal_mulai')
+    var tglSelesai = document.querySelector('#tanggal_selesai')
+    var form = document.querySelector('#form-upload-soal')
     $(document).ready(function() {
-        var form = document.querySelector('#form-bank-soal')
         FormValidation.formValidation(form, {
                 fields: {
-                    kode: {
+                    soal: {
                         validators: {
                             notEmpty: {
-                                message: 'Kode harus diisi'
+                                message: 'Bank soal harus dipilih'
                             }
                         }
                     },
-                    nama: {
+                    jenis: {
                         validators: {
                             notEmpty: {
-                                message: 'Nama soal harus diisi'
+                                message: 'Tipe soal harus diisi'
                             }
                         }
                     },
-                    jenis_soal: {
+                    tipe: {
                         validators: {
                             notEmpty: {
-                                message: 'Jenis Soal harus dipilin'
+                                message: 'Status soal harus dipilih'
                             }
                         }
                     },
-                    jml_soal: {
+                    tanggal_mulai: {
                         validators: {
                             notEmpty: {
-                                message: 'Jumlah Soal harus diisi'
+                                message: 'Tanggal mulai harus diisi'
                             }
                         }
                     },
-                    bobot_soal: {
+                    tanggal_selesai: {
                         validators: {
                             notEmpty: {
-                                message: 'Jumlah Soal harus diisi'
+                                message: 'Tanggal selesai harus diisi'
                             }
                         }
                     },
-                    opsi_jawab: {
+                    durasi: {
                         validators: {
                             notEmpty: {
-                                message: 'Opsi Jawaban harus dipilih'
+                                message: 'Durasi harus diisi'
                             }
                         }
                     },
@@ -50,7 +53,7 @@
                     trigger: new FormValidation.plugins.Trigger(),
                     bootstrap5: new FormValidation.plugins.Bootstrap5({
                         eleValidClass: '',
-                        rowSelector: '.bank-soal'
+                        rowSelector: '.upload-soal'
                     }),
                     submitButton: new FormValidation.plugins.SubmitButton(),
                     autoFocus: new FormValidation.plugins.AutoFocus()
@@ -67,29 +70,12 @@
             .on('core.form.valid', function() {
                 saveForm()
             })
-
-        var tglMulai = document.querySelector('#tanggal_mulai')
-        var tglSelesai = document.querySelector('#tanggal_selesai')
-
-        if (tglMulai) {
-            tglMulai.flatpickr({
-                enableTime: true,
-                dateFormat: 'Y-m-d H:i'
-            });
-        }
-
-        if (tglSelesai) {
-            tglSelesai.flatpickr({
-                enableTime: true,
-                dateFormat: 'Y-m-d H:i'
-            });
-        }
     })
 
     function saveForm() {
         var action = document.querySelector('#action').value
         var method = action == 'add' ? 'POST' : 'PUT'
-        var res = dxAjax(`/bank-soal/${action}`, $('#form-bank-soal').serialize(), method)
+        var res = dxAjax(`/upload-soal/${action}`, $('#form-upload-soal').serialize(), method)
         if (res.status == 200) {
             Swal.fire({
                 title: 'Berhasil!',
@@ -100,7 +86,7 @@
                 },
                 buttonsStyling: false
             });
-            window.location.href = '/bank-soal'
+            window.location.href = '/upload-soal'
         } else {
             Swal.fire({
                 title: 'Error!',
@@ -112,5 +98,30 @@
                 buttonsStyling: false
             });
         }
+    }
+
+    if (selectSoal.length) {
+        selectSoal.each(function() {
+            var $this = $(this);
+            select2Focus($this);
+            $this.wrap('<div class="position-relative"></div>').select2({
+                placeholder: 'Pilih Bank Soal',
+                dropdownParent: $this.parent()
+            });
+        });
+    }
+
+    if (tglMulai) {
+        tglMulai.flatpickr({
+            enableTime: true,
+            dateFormat: 'Y-m-d H:i'
+        });
+    }
+
+    if (tglSelesai) {
+        tglSelesai.flatpickr({
+            enableTime: true,
+            dateFormat: 'Y-m-d H:i'
+        });
     }
 </script>

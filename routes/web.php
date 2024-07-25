@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\AdminController;
 use App\Http\Controllers\Admin\BankSoalController;
 use App\Http\Controllers\admin\ManajemenUserController;
 use App\Http\Controllers\admin\MasterJenisSoalController;
+use App\Http\Controllers\Admin\UploadSoalController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
@@ -69,6 +70,13 @@ Route::group(['middleware' => ['auth', 'role:1']], function () {
     Route::get('/bank-soal/detail/form-edit', [BankSoalController::class, 'editDetail']);
     Route::put('/bank-soal/detail/edit', [BankSoalController::class, 'detailEdit']);
     Route::delete('/bank-soal/detail/hapus', [BankSoalController::class, 'detailHapus']);
+    // upload soal
+    Route::get('/upload-soal', [UploadSoalController::class, 'index'])->name('upload-soal');
+    Route::get('/upload-soal/create', [UploadSoalController::class, 'create']);
+    Route::post('/upload-soal/add', [UploadSoalController::class, 'store']);
+    Route::get('/upload-soal/ubah', [UploadSoalController::class, 'edit']);
+    Route::put('/upload-soal/edit', [UploadSoalController::class, 'update']);
+    Route::delete('/upload-soal/hapus', [UploadSoalController::class, 'destroy']);
 });
 
 Route::group(['middleware' => ['auth', 'role:2']], function () {
