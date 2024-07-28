@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LandingPageController;
+use App\Http\Controllers\User\RuangUjianController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -32,7 +33,9 @@ use Illuminate\Support\Facades\Route;
 
 Auth::routes();
 // landing page
-Route::get('/', [LandingPageController::class, 'index']);
+Route::get('/', [LandingPageController::class, 'index'])->name('landing');
+Route::get('/soal-to', [LandingPageController::class, 'detailTo']);
+Route::get('/soal-to/add', [LandingPageController::class, 'addUjian']);
 // login
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
 Route::post('post-login-member', [LoginController::class, 'login'])->name('post-login');
@@ -81,4 +84,8 @@ Route::group(['middleware' => ['auth', 'role:1']], function () {
 
 Route::group(['middleware' => ['auth', 'role:2']], function () {
     Route::get('/user', [UserController::class, 'index'])->name('user');
+
+    Route::get('/ruang-ujian', [RuangUjianController::class, 'index'])->name('ruang-ujian');
+    Route::get('/ruang-ujian/add', [RuangUjianController::class, 'addRuangUjian'])->name('add-ruang-ujian');
+    Route::get('/ruang-ujian/detail', [RuangUjianController::class, 'detail']);
 });

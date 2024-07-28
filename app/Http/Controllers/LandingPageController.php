@@ -2,7 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\FuncHelper;
+use App\Models\admin\MUploadSoal;
+use App\Models\MBankSoal;
+use App\Models\user\TRuangUjian;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class LandingPageController extends Controller
 {
@@ -11,7 +18,29 @@ class LandingPageController extends Controller
      */
     public function index()
     {
-        return view('landing.index');
+        $bank_soal = MUploadSoal::with('soal')->get();
+        $test = Carbon::now()->translatedFormat('d F Y');
+        // return $test;
+        return view('landing.index', compact(
+            'bank_soal'
+        ));
+    }
+
+    public function detailTo(Request $request)
+    {
+        $data = MUploadSoal::with('soal')->where('id', $request->id)->first();
+        return view('landing.detail', compact(
+            'data'
+        ));
+    }
+
+    public function addUjian(Request $request)
+    {
+        if (Auth::check()) {
+            return redirect()->route('add-ruang-ujian', ['id' => $request->id]);
+        } else {
+            return redirect()->route('login');
+        }
     }
 
     /**
@@ -27,7 +56,6 @@ class LandingPageController extends Controller
      */
     public function store(Request $request)
     {
-        //
     }
 
     /**

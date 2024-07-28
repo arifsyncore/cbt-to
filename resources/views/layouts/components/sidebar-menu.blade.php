@@ -1,6 +1,6 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
     <div class="app-brand demo">
-        <a href="index.html" class="app-brand-link">
+        <a href="{{ route('landing') }}" class="app-brand-link">
             <span class="app-brand-logo demo">
                 <span style="color: var(--bs-primary)">
                     <svg width="268" height="150" viewBox="0 0 38 20" fill="none"
@@ -60,35 +60,47 @@
                 <div data-i18n="Dashboard">Dashboard</div>
             </a>
         </li>
-        <li class="menu-header mt-5">
-            <span class="menu-header-text" data-i18n="Setup">Setup</span>
-        </li>
-        <li class="menu-item {{ Request::is('manajemen-user') ? 'active' : '' }}">
-            <a href="{{ route('manajemen-user') }}" class="menu-link">
-                <i class="menu-icon tf-icons ri-group-2-line"></i>
-                <div data-i18n="Manajemen User">Manajemen User</div>
-            </a>
-        </li>
-        <li class="menu-header mt-5">
-            <span class="menu-header-text" data-i18n="Data Ujian">Data Ujian</span>
-        </li>
-        <li class="menu-item {{ Request::is('jenis-soal') ? 'active' : '' }}">
-            <a href="{{ route('jenis-soal') }}" class="menu-link">
-                <i class="menu-icon tf-icons ri-inbox-archive-fill"></i>
-                <div data-i18n="Jenis Soal">Jenis Soal</div>
-            </a>
-        </li>
-        <li class="menu-item {{ Request::is('bank-soal') ? 'active' : '' }}">
-            <a href="{{ route('bank-soal') }}" class="menu-link">
-                <i class="menu-icon tf-icons ri-folders-line"></i>
-                <div data-i18n="Bank Soal">Bank Soal</div>
-            </a>
-        </li>
-        <li class="menu-item {{ Request::is('upload-soal') ? 'active' : '' }}">
-            <a href="{{ route('upload-soal') }}" class="menu-link">
-                <i class="menu-icon tf-icons ri-upload-2-fill"></i>
-                <div data-i18n="Post Soal">Post Soal</div>
-            </a>
-        </li>
+        @if (Auth::user()->role_id == 1)
+            <li class="menu-header mt-5">
+                <span class="menu-header-text" data-i18n="Setup">Setup</span>
+            </li>
+            <li class="menu-item {{ Request::is('manajemen-user') ? 'active' : '' }}">
+                <a href="{{ route('manajemen-user') }}" class="menu-link">
+                    <i class="menu-icon tf-icons ri-group-2-line"></i>
+                    <div data-i18n="Manajemen User">Manajemen User</div>
+                </a>
+            </li>
+            <li class="menu-header mt-5">
+                <span class="menu-header-text" data-i18n="Data Ujian">Data Ujian</span>
+            </li>
+            <li class="menu-item {{ Request::is('jenis-soal') ? 'active' : '' }}">
+                <a href="{{ route('jenis-soal') }}" class="menu-link">
+                    <i class="menu-icon tf-icons ri-inbox-archive-fill"></i>
+                    <div data-i18n="Jenis Soal">Jenis Soal</div>
+                </a>
+            </li>
+            <li class="menu-item {{ Request::is('bank-soal') ? 'active' : '' }}">
+                <a href="{{ route('bank-soal') }}" class="menu-link">
+                    <i class="menu-icon tf-icons ri-folders-line"></i>
+                    <div data-i18n="Bank Soal">Bank Soal</div>
+                </a>
+            </li>
+            <li class="menu-item {{ Request::is('upload-soal') ? 'active' : '' }}">
+                <a href="{{ route('upload-soal') }}" class="menu-link">
+                    <i class="menu-icon tf-icons ri-upload-2-fill"></i>
+                    <div data-i18n="Post Soal">Post Soal</div>
+                </a>
+            </li>
+        @else
+            <li class="menu-header mt-5">
+                <span class="menu-header-text" data-i18n="Ruang Ujian">Ruang Ujian</span>
+            </li>
+            <li class="menu-item {{ Request::is('ruang-ujian') ? 'active' : '' }}">
+                <a href="{{ route('ruang-ujian') }}" class="menu-link">
+                    <i class="menu-icon tf-icons ri-task-line"></i>
+                    <div data-i18n="Ruang Ujian">Ruang Ujian</div>
+                </a>
+            </li>
+        @endif
     </ul>
 </aside>
