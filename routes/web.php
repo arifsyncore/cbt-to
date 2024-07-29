@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\User\RuangUjianController;
+use App\Http\Controllers\User\UjianController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -88,4 +89,6 @@ Route::group(['middleware' => ['auth', 'role:2']], function () {
     Route::get('/ruang-ujian', [RuangUjianController::class, 'index'])->name('ruang-ujian');
     Route::get('/ruang-ujian/add', [RuangUjianController::class, 'addRuangUjian'])->name('add-ruang-ujian');
     Route::get('/ruang-ujian/detail', [RuangUjianController::class, 'detail']);
+    // halaman ujian
+    Route::get('/try-out/cbt', [UjianController::class, 'index'])->name('try-out');
 });

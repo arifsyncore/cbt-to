@@ -27,7 +27,7 @@
                         </li>
                     </ul>
                     <button type="button" data-id="{{ $data->id }}"
-                        class="btn rounded-pill btn-success waves-effect waves-light add-list">
+                        class="btn rounded-pill btn-success waves-effect waves-light kerjakan-soal">
                         <span class="tf-icons ri-door-open-fill ri-16px me-2"></span>Kerjakan Soal
                     </button>
                 </div>
@@ -37,5 +37,5 @@
 @endsection
 
 @section('js')
-
+    @include('user.ruang-ujian.js.detail')
 @endsection

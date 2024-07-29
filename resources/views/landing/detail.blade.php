@@ -73,31 +73,6 @@
             }).then(function(result) {
                 if (result.value) {
                     window.location.href = `/soal-to/add?id=${id_soal}`
-                    // var res = dxAjax(`ruang-ujian/add`, {
-                    //     id: id_soal
-                    // }, 'POST')
-                    // if (res.status == 200) {
-                    //     Swal.fire({
-                    //         title: 'Berhasil!',
-                    //         text: res.message,
-                    //         icon: 'success',
-                    //         customClass: {
-                    //             confirmButton: 'btn btn-primary waves-effect waves-light'
-                    //         },
-                    //         buttonsStyling: false
-                    //     });
-                    //     window.location.href = '/bank-soal'
-                    // } else {
-                    //     Swal.fire({
-                    //         title: 'Error!',
-                    //         text: res.message,
-                    //         icon: 'error',
-                    //         customClass: {
-                    //             confirmButton: 'btn btn-primary waves-effect waves-light'
-                    //         },
-                    //         buttonsStyling: false
-                    //     });
-                    // }
                 }
             });
         })
