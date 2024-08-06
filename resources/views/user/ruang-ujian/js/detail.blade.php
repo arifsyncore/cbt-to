@@ -16,7 +16,7 @@
             buttonsStyling: false
         }).then(function(result) {
             if (result.value) {
-                window.location.href = `/try-out/cbt?id=${id}`
+                window.location.href = `/try-out/add?id=${id}`
             }
         });
     })

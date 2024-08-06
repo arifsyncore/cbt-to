@@ -90,5 +90,10 @@ Route::group(['middleware' => ['auth', 'role:2']], function () {
     Route::get('/ruang-ujian/add', [RuangUjianController::class, 'addRuangUjian'])->name('add-ruang-ujian');
     Route::get('/ruang-ujian/detail', [RuangUjianController::class, 'detail']);
     // halaman ujian
-    Route::get('/try-out/cbt', [UjianController::class, 'index'])->name('try-out');
+    Route::get('/try-out/add', [UjianController::class, 'addUjian']);
+    Route::get('/try-out/to', [UjianController::class, 'index'])->name('try-out');
+    Route::get('/try-out/loadsoal', [UjianController::class, 'loadSoal']);
+    Route::get('/try-out/tandaisoal', [UjianController::class, 'tandaiSoal']);
+    Route::get('/try-out/lanjutsoal', [UjianController::class, 'lanjutSoal']);
+    Route::get('/try-out/loadsoalselanjutnya', [UjianController::class, 'loadSoalSelanjutnya']);
 });

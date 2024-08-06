@@ -85,7 +85,7 @@
     <script src="{{ asset('/assets/js/front-main.js') }}"></script>
     <script src="{{ asset('/assets/js/ajax.js') }}"></script>
     <!-- Page JS -->
-    <script src="{{ asset('/assets/js/front-page-landing.js') }}"></script>
+    {{-- <script src="{{ asset('/assets/js/front-page-landing.js') }}"></script> --}}
     @yield('js')
 </body>
 

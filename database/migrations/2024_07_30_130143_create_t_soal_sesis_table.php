@@ -11,12 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('t_ruang_ujians', function (Blueprint $table) {
+        Schema::create('t_soal_sesis', function (Blueprint $table) {
             $table->id();
+            $table->integer('id_sesi')->nullable();
             $table->integer('id_user')->nullable();
-            $table->integer('id_upload_soal')->nullable();
-            $table->string('nomor_ujian')->nullable();
-            $table->string('status')->nullable();
+            $table->integer('id_ruang_ujian')->nullable();
+            $table->integer('id_soal')->nullable();
+            $table->string('no')->nullable();
+            $table->string('jawaban', 50)->nullable();
+            $table->string('status', 50)->nullable();
             $table->dateTime('created_at')->nullable();
             $table->smallInteger('user_create')->nullable()->default(0);
             $table->dateTime('updated_at')->nullable();
@@ -31,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('t_ruang_ujians');
+        Schema::dropIfExists('t_soal_sesis');
     }
 };

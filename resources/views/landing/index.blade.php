@@ -7,19 +7,55 @@
 @endsection
 @section('content')
     <div data-bs-spy="scroll" class="scrollspy-example">
-        <section id="landingHero" class="section-py landing-hero position-relative mb-6">
-            <img src="../../assets/img/front-pages/backgrounds/hero-bg-light.png" alt="hero background"
+        <section id="landingHero" class="section-py landing-hero position-relative">
+            <img src="{{ asset('/assets/img/front-pages/backgrounds/hero-bg-light.png') }}" alt="hero background"
                 class="position-absolute top-0 start-0 w-100 h-100 z-n1" data-speed="1"
                 data-app-light-img="front-pages/backgrounds/hero-bg-light.png"
                 data-app-dark-img="front-pages/backgrounds/hero-bg-dark.png" />
             <div class="container">
-                <div class="hero-text-box text-center">
-                    <h3 class="text-primary hero-title fs-2">All in one sass application for your business</h3>
-                    <h2 class="h6 mb-8">
-                        No coding required to make customisations.<br />The live customiser has everything your marketing
-                        need.
-                    </h2>
-                    <a href="#landingPricing" class="btn btn-lg btn-primary">Get early access</a>
+                <div class="swiper-reviews-carousel overflow-hidden mb-12 pt-4">
+                    <div class="swiper" id="swiper-reviews">
+                        <div class="swiper-wrapper">
+                            <div class="swiper-slide">
+                                <div class="row h-100">
+                                    <div class="col-md-12 col-lg-12 d-flex align-items-center">
+                                        <div class="card bg-transparent shadow-none ms-6">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Special title treatment</h5>
+                                                <p class="card-text">With supporting text below as a natural lead-in to
+                                                    additional content.</p>
+                                                <a href="javascript:void(0)"
+                                                    class="btn btn-primary waves-effect waves-light">Go
+                                                    somewhere</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="swiper-slide">
+                                <div class="row h-100">
+                                    <div class="col-md-12 col-lg-12 d-flex align-items-center">
+                                        <div class="card bg-transparent shadow-none ms-6">
+                                            <div class="card-body">
+                                                <h5 class="card-title">Special title treatment</h5>
+                                                <p class="card-text">With supporting text below as a natural lead-in to
+                                                    additional content.</p>
+                                                <a href="javascript:void(0)"
+                                                    class="btn btn-primary waves-effect waves-light">Go
+                                                    somewhere</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Add Arrows -->
+                        <div class="swiper-button-next"></div>
+                        <div class="swiper-button-prev"></div>
+                        <!-- Add Pagination -->
+                        <div class="swiper-pagination"></div>
+                        <div class="swiper-pagination"></div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -86,6 +122,35 @@
     <script src="{{ asset('/assets/vendor/libs/swiper/swiper.js') }}"></script>
     <script>
         const swiperMultipleSlides = document.querySelector('#swiper-multiple-slides')
+        const swiperReviews = document.getElementById('swiper-reviews')
+        if (swiperReviews) {
+            new Swiper(swiperReviews, {
+                slidesPerView: 1,
+                spaceBetween: 5,
+                centeredSlides: false,
+                grabCursor: true,
+                autoplay: {
+                    delay: 3000,
+                    disableOnInteraction: false
+                },
+                loop: true,
+                pagination: {
+                    el: '.swiper-pagination',
+                    clickable: true
+                },
+                // breakpoints: {
+                //     992: {
+                //         slidesPerView: 4,
+                //         spaceBetween: 24
+                //     },
+                //     768: {
+                //         slidesPerView: 2,
+                //         spaceBetween: 24
+                //     }
+                // }
+            });
+        }
+
         if (swiperMultipleSlides) {
             new Swiper(swiperMultipleSlides, {
                 slidesPerView: 3,

@@ -19,8 +19,6 @@ class LandingPageController extends Controller
     public function index()
     {
         $bank_soal = MUploadSoal::with('soal')->get();
-        $test = Carbon::now()->translatedFormat('d F Y');
-        // return $test;
         return view('landing.index', compact(
             'bank_soal'
         ));

@@ -9,7 +9,7 @@
                 <div class="col-12">
                     <div class="card">
                         <div class="card-header header-elements">
-                            <h5 class="mb-0 me-2">Nama Soal</h5>
+                            <h5 class="mb-0 me-2">{{ $data['nama_soal'] }}</h5>
                             <div class="card-header-elements ms-auto">
                                 <div class="fw-bold text-reset">
                                     <small id="timer"></small>
@@ -19,198 +19,17 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-8">
-                                    <div class="tab-content">
-                                        <div class="tab-pane fade show active" id="navs-pills-no-1" role="tabpanel">
-                                            <div class="card mb-6">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">01. Lembaga keuangan bukan bank yang menjalankan
-                                                        usahanya
-                                                        di
-                                                        bidang perlindungan seseorang atau perusahaan dari kerugian keuangan
-                                                        yang
-                                                        disebabkan oleh kerusakan atau pencurian aset dan kematian atau
-                                                        kecelakaan
-                                                        adalah</h5>
-                                                    <ul class="list-group list-group-flush mb-6">
-                                                        <li class="list-group-item">
-                                                            <div class="form-check">
-                                                                <input name="default-radio-1" class="form-check-input"
-                                                                    type="radio" value="" id="defaultRadio1">
-                                                                <label class="form-check-label" for="defaultRadio1">
-                                                                    Pegadaian
-                                                                </label>
-                                                            </div>
-                                                        </li>
-                                                        <li class="list-group-item">
-                                                            <div class="form-check">
-                                                                <input name="default-radio-1" class="form-check-input"
-                                                                    type="radio" value="" id="defaultRadio1">
-                                                                <label class="form-check-label" for="defaultRadio1">
-                                                                    Perusahaan
-                                                                    Asuransi
-                                                                </label>
-                                                            </div>
-                                                        </li>
-                                                        <li class="list-group-item">
-                                                            <div class="form-check">
-                                                                <input name="default-radio-1" class="form-check-input"
-                                                                    type="radio" value="" id="defaultRadio1">
-                                                                <label class="form-check-label" for="defaultRadio1"> Bursa
-                                                                    Efek
-                                                                </label>
-                                                            </div>
-                                                        </li>
-                                                        <li class="list-group-item">
-                                                            <div class="form-check">
-                                                                <input name="default-radio-1" class="form-check-input"
-                                                                    type="radio" value="" id="defaultRadio1">
-                                                                <label class="form-check-label" for="defaultRadio1"> Lembaga
-                                                                    pinjaman Simpanan
-                                                                </label>
-                                                            </div>
-                                                        </li>
-                                                        <li class="list-group-item">
-                                                            <div class="form-check">
-                                                                <input name="default-radio-1" class="form-check-input"
-                                                                    type="radio" value="" id="defaultRadio1">
-                                                                <label class="form-check-label" for="defaultRadio1">
-                                                                    Reksadana
-                                                                </label>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                    <div class="d-flex justify-content-between">
-                                                        <button type="button"
-                                                            class="btn rounded-pill btn-primary waves-effect waves-light"><span
-                                                                class="tf-icons ri-arrow-left-line ri-16px me-2"></span>Kembali</button>
-                                                        <button type="button"
-                                                            class="btn rounded-pill btn-warning waves-effect waves-light"><span
-                                                                class="tf-icons ri-flag-line ri-16px me-2"></span>Tandai
-                                                            Ragu</button>
-                                                        <button type="button"
-                                                            class="btn rounded-pill btn-primary waves-effect waves-light">Lanjut<span
-                                                                class="tf-icons ri-arrow-right-line ri-16px me-2"></span></button>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="tab-pane fade" id="navs-pills-no-2" role="tabpanel">
-                                            <div class="card mb-6">
-                                                <div class="card-body">
-                                                    <h5 class="card-title">02. Lembaga keuangan bukan bank yang menjalankan
-                                                        usahanya
-                                                        di
-                                                        bidang perlindungan seseorang atau perusahaan dari kerugian keuangan
-                                                        yang
-                                                        disebabkan oleh kerusakan atau pencurian aset dan kematian atau
-                                                        kecelakaan
-                                                        adalah</h5>
-                                                    <ul class="list-group list-group-flush mb-6">
-                                                        <li class="list-group-item">
-                                                            <div class="form-check">
-                                                                <input name="default-radio-2" class="form-check-input"
-                                                                    type="radio" value="" id="defaultRadio1">
-                                                                <label class="form-check-label" for="defaultRadio1">
-                                                                    Pegadaian
-                                                                </label>
-                                                            </div>
-                                                        </li>
-                                                        <li class="list-group-item">
-                                                            <div class="form-check">
-                                                                <input name="default-radio-2" class="form-check-input"
-                                                                    type="radio" value="" id="defaultRadio1">
-                                                                <label class="form-check-label" for="defaultRadio1">
-                                                                    Perusahaan
-                                                                    Asuransi
-                                                                </label>
-                                                            </div>
-                                                        </li>
-                                                        <li class="list-group-item">
-                                                            <div class="form-check">
-                                                                <input name="default-radio-2" class="form-check-input"
-                                                                    type="radio" value="" id="defaultRadio1">
-                                                                <label class="form-check-label" for="defaultRadio1"> Bursa
-                                                                    Efek
-                                                                </label>
-                                                            </div>
-                                                        </li>
-                                                        <li class="list-group-item">
-                                                            <div class="form-check">
-                                                                <input name="default-radio-2" class="form-check-input"
-                                                                    type="radio" value="" id="defaultRadio1">
-                                                                <label class="form-check-label" for="defaultRadio1">
-                                                                    Lembaga
-                                                                    pinjaman Simpanan
-                                                                </label>
-                                                            </div>
-                                                        </li>
-                                                        <li class="list-group-item">
-                                                            <div class="form-check">
-                                                                <input name="default-radio-2" class="form-check-input"
-                                                                    type="radio" value="" id="defaultRadio1">
-                                                                <label class="form-check-label" for="defaultRadio1">
-                                                                    Reksadana
-                                                                </label>
-                                                            </div>
-                                                        </li>
-                                                    </ul>
-                                                    <div class="d-flex justify-content-between">
-                                                        <button type="button"
-                                                            class="btn rounded-pill btn-primary waves-effect waves-light"><span
-                                                                class="tf-icons ri-arrow-left-line ri-16px me-2"></span>Kembali</button>
-                                                        <button type="button"
-                                                            class="btn rounded-pill btn-warning waves-effect waves-light"><span
-                                                                class="tf-icons ri-flag-line ri-16px me-2"></span>Tandai
-                                                            Ragu</button>
-                                                        <button type="button"
-                                                            class="btn rounded-pill btn-primary waves-effect waves-light">Lanjut<span
-                                                                class="tf-icons ri-arrow-right-line ri-16px me-2"></span></button>
-                                                    </div>
-                                                </div>
-                                            </div>
+                                    <div class="card mb-6">
+                                        <div class="card-body" id="field_soal">
+
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-4">
                                     <div class="card mb-6">
                                         <div class="card-body">
-                                            <div class="row mb-4" role="tablist">
-                                                {{-- <div class="col-2 d-flex justify-content-center mb-3">
-                                                    <ul class="nav nav-pills mb-4" role="tablist">
-                                                        <li class="nav-item">
-                                                            <button type="button" class="nav-link active" role="tab"
-                                                                data-bs-toggle="tab" data-bs-target="#navs-pills-no-1"
-                                                                aria-controls="navs-pills-no-1" aria-selected="true">
-                                                                Home
-                                                            </button>
-                                                        </li>
-                                                        <li class="nav-item">
-                                                            <button type="button" class="nav-link" role="tab"
-                                                                data-bs-toggle="tab" data-bs-target="#navs-pills-no-2"
-                                                                aria-controls="navs-pills-no-2" aria-selected="false">
-                                                                Profile
-                                                            </button>
-                                                        </li>
-                                                    </ul>
-                                                </div> --}}
-                                                <div class="col-2 d-flex justify-content-center mb-3">
-                                                    <button type="button"
-                                                        class="btn btn-icon btn-outline-primary waves-effect active"
-                                                        role="tab" data-bs-toggle="tab"
-                                                        data-bs-target="#navs-pills-no-1" aria-controls="navs-pills-no-1"
-                                                        aria-selected="true">
-                                                        1
-                                                    </button>
-                                                </div>
-                                                <div class="col-2 d-flex justify-content-center mb-3">
-                                                    <button type="button"
-                                                        class="btn btn-icon btn-outline-primary waves-effect"
-                                                        role="tab" data-bs-toggle="tab"
-                                                        data-bs-target="#navs-pills-no-2" aria-controls="navs-pills-no-2"
-                                                        aria-selected="true">
-                                                        2
-                                                    </button>
-                                                </div>
+                                            <div class="row mb-4" id="field_tab">
+
                                             </div>
                                             <div class="d-flex justify-content-end">
                                                 <button type="button"
@@ -235,10 +54,106 @@
 
 @section('js')
     <script>
+        var id_soal_pertama = "{!! $data['id_soal'] !!}";
+        var id_sesi = "{!! $data['id_sesi'] !!}";
+        var id_ruang_ujian = "{!! $data['id_ruang_ujian'] !!}";
+        var fieldsSoal = document.querySelector('#field_soal')
+        var fieldsTab = document.querySelector('#field_tab')
+        $(document).ready(function() {
+            loadSoalPertama(id_soal_pertama, id_sesi, id_ruang_ujian)
+        })
+
+        function loadSoalPertama(id_soal, id_sesi, id_ruang_ujian) {
+            var res = dxAjax(`/try-out/loadsoal`, {
+                'id_soal': id_soal_pertama,
+                'id_sesi': id_sesi,
+                'id_ruang_ujian': id_ruang_ujian
+            }, 'GET')
+            if (res.status == 200) {
+                fieldsSoal.innerHTML = res.data
+                fieldsTab.innerHTML = res.data2
+                loadsoal()
+            } else {
+
+            }
+        }
+
+        function loadsoal() {
+            var radioJwb = document.querySelectorAll('.jawaban')
+            var form = document.querySelector('#form-soal')
+            radioJwb.forEach(radio => radio.addEventListener('change', function() {
+                var no = radio.dataset.no
+                var btn = document.querySelector(`#btn-tab${no}`)
+                btn.classList.remove('btn-outline-primary')
+                btn.classList.add('btn-primary')
+            }))
+            var btnRagu = document.querySelector('.btn-ragu')
+            btnRagu.addEventListener('click', function() {
+                if ($('.jawaban').is(':checked')) {
+                    var id_soal = this.dataset.id
+                    var res = dxAjax(`/try-out/tandaisoal`, $('#form-soal').serialize(), 'GET')
+                    if (res.status == 200) {
+                        loadSoalPertama(id_soal, id_sesi, id_ruang_ujian)
+                    } else {
+
+                    }
+                } else {
+                    Swal.fire({
+                        title: 'Warning !',
+                        text: 'Belum mengisi jawaban',
+                        icon: 'warning',
+                        customClass: {
+                            confirmButton: 'btn btn-primary waves-effect waves-light'
+                        },
+                        buttonsStyling: false
+                    });
+                }
+            })
+
+            var btnLanjut = document.querySelector('.btn-lanjut')
+            btnLanjut.addEventListener('click', function() {
+                if ($('.jawaban').is(':checked')) {
+                    var nomor = this.dataset.no
+                    var res = dxAjax(`/try-out/lanjutsoal`, $('#form-soal').serialize(), 'GET')
+                    if (res.status == 200) {
+                        loadSoalSelanjutnya(nomor, id_sesi, id_ruang_ujian)
+                    } else {
+
+                    }
+                } else {
+                    Swal.fire({
+                        title: 'Warning !',
+                        text: 'Belum mengisi jawaban',
+                        icon: 'warning',
+                        customClass: {
+                            confirmButton: 'btn btn-primary waves-effect waves-light'
+                        },
+                        buttonsStyling: false
+                    });
+                }
+            })
+
+        }
+
+        function loadSoalSelanjutnya(no, id_sesi, id_ruang_ujian) {
+            var res = dxAjax(`/try-out/loadsoalselanjutnya`, {
+                'no': no,
+                'id_sesi': id_sesi,
+                'id_ruang_ujian': id_ruang_ujian
+            }, 'GET')
+            if (res.status == 200) {
+                fieldsSoal.innerHTML = res.data
+                fieldsTab.innerHTML = res.data2
+                loadsoal()
+            } else {
+
+            }
+        }
+
         setWaktu()
 
         function setWaktu() {
-            var sisa_waktu = "{!! $data['hasil'] !!}";
+            var sisa_waktu = "{!! $data['sisa_waktu'] !!}";
             var sisaWaktu = sisa_waktu
             var countdownElement = document.querySelector('#timer');
             var countdown = setInterval(function() {
@@ -262,8 +177,13 @@
                 if (sisaWaktu < 0) {
                     clearInterval(countdown);
                     countdownElement.innerHTML = "Waktu sudah habis!";
+                    submitWaktuHabis()
                 }
             }, 1000);
+        }
+
+        function submitWaktuHabis() {
+            window.location.href = `/ruang-ujian`
         }
 
         function submit() {

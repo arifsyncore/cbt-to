@@ -12,4 +12,9 @@ class TSesiUser extends Model
 
     protected $table = 't_sesi_users';
     protected $guarded = ['id'];
+
+    public function ruangujian()
+    {
+        return $this->belongsTo(TRuangUjian::class, 'id_ruang_ujian', 'id', 'id');
+    }
 }
