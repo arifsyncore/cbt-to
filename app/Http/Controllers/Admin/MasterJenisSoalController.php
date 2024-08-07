@@ -5,6 +5,7 @@ namespace App\Http\Controllers\admin;
 use App\Helpers\FuncHelper;
 use App\Http\Controllers\Controller;
 use App\Models\admin\MJenisUjian;
+use App\Models\admin\MJenisUjianDet;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
@@ -21,6 +22,9 @@ class MasterJenisSoalController extends Controller
             return DataTables::of($data)
                 ->addColumn('aksi', function ($data) {
                     $button = '
+                    <button type="button" class="btn btn-icon btn-primary btn-fab demo waves-effect waves-light" onclick="show(' . $data->id . ')">
+                        <span class="tf-icons ri-information-line ri-22px"></span>
+                    </button>
                     <button type="button" class="btn btn-icon btn-warning btn-fab demo waves-effect waves-light" onclick="edit(' . $data->id . ')">
                         <span class="tf-icons ri-edit-line ri-22px"></span>
                     </button>
@@ -42,15 +46,14 @@ class MasterJenisSoalController extends Controller
      */
     public function create()
     {
-        try {
-            $action = 'add';
-            $view = view('admin.jenis-soal.components.form', compact(
-                'action'
-            ))->render();
-            return ['status' => 200, 'data' => $view];
-        } catch (\Throwable $th) {
-            return ['status' => 500, 'message' => 'Gagal memuat data'];
-        }
+        $action = 'add';
+        $title = 'Tambah';
+        $kode = $this->getKode();
+        return view('admin.jenis-soal.components.form', compact(
+            'action',
+            'title',
+            'kode',
+        ));
     }
 
     /**
@@ -59,24 +62,52 @@ class MasterJenisSoalController extends Controller
     public function store(Request $request)
     {
         try {
+            foreach ($request['group-a'] as $key => $value) {
+                if ($value['nama'] == null) {
+                    return ['status' => 500, 'message' => 'Periksa kembali data yang anda input'];
+                }
+                if ($value['bobot'] == null) {
+                    return ['status' => 500, 'message' => 'Periksa kembali data yang anda input'];
+                }
+                if ($value['jml'] == null) {
+                    return ['status' => 500, 'message' => 'Periksa kembali data yang anda input'];
+                }
+            }
             DB::transaction(function () use ($request) {
-                FuncHelper::dxInsert(new MJenisUjian(), [
+                $jenis = FuncHelper::dxInsert(new MJenisUjian(), [
                     'kode' => $request->kode,
                     'jenis' => $request->jenis
                 ]);
+                foreach ($request['group-a'] as $key => $value) {
+                    FuncHelper::dxInsert(new MJenisUjianDet(), [
+                        'id_jenis' => $jenis->id,
+                        'nama' => $value['nama'],
+                        'bobot_soal' => $value['bobot'],
+                        'jml_soal' => $value['jml']
+                    ]);
+                }
             });
             return ['status' => 200, 'message' => 'Berhasil menyimpan data'];
         } catch (\Throwable $th) {
-            return ['status' => 500, 'message' => 'Berhasil menyimpan data'];
+            return ['status' => 500, 'message' => 'Gagal menyimpan data'];
         }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(Request $request)
     {
-        //
+        try {
+            $data = MJenisUjian::with('detail')
+                ->withSum('detail', 'jml_soal')
+                ->where('id', $request->id)
+                ->first();
+            $view = view('admin.jenis-soal.components.detail', compact('data'))->render();
+            return ['status' => 200, 'data' => $view];
+        } catch (\Throwable $th) {
+            return ['status' => 500, 'message' => 'Gagal memuat data'];
+        }
     }
 
     /**
@@ -84,17 +115,14 @@ class MasterJenisSoalController extends Controller
      */
     public function edit(Request $request)
     {
-        try {
-            $action = 'edit';
-            $jenis = MJenisUjian::where('id', $request->id)->first();
-            $view = view('admin.jenis-soal.components.form', compact(
-                'action',
-                'jenis'
-            ))->render();
-            return ['status' => 200, 'data' => $view];
-        } catch (\Throwable $th) {
-            return ['status' => 500, 'message' => 'Gagal memuat data'];
-        }
+        $action = 'edit';
+        $title = 'Ubah';
+        $data = MJenisUjian::with('detail')->where('id', $request->id)->first();
+        return view('admin.jenis-soal.components.form', compact(
+            'action',
+            'title',
+            'data',
+        ));
     }
 
     /**
@@ -108,6 +136,16 @@ class MasterJenisSoalController extends Controller
                     'kode' => $request->kode,
                     'jenis' => $request->jenis
                 ]);
+
+                FuncHelper::dxDelete(new MJenisUjianDet(), ['id_jenis' => $request->id]);
+                foreach ($request['group-a'] as $key => $value) {
+                    FuncHelper::dxInsert(new MJenisUjianDet(), [
+                        'id_jenis' => $request->id,
+                        'nama' => $value['nama'],
+                        'bobot_soal' => $value['bobot'],
+                        'jml_soal' => $value['jml']
+                    ]);
+                }
             });
             return ['status' => 200, 'message' => 'Berhasil mengubah data'];
         } catch (\Throwable $th) {
@@ -122,11 +160,25 @@ class MasterJenisSoalController extends Controller
     {
         try {
             DB::transaction(function () use ($request) {
+                FuncHelper::dxDelete(new MJenisUjianDet(), ['id_jenis' => $request->id]);
                 FuncHelper::dxDelete(new MJenisUjian(), ['id' => $request->id]);
             });
             return ['status' => 200, 'message' => 'Berhasil Menghapus Data'];
         } catch (\Throwable $th) {
             return ['status' => 500, 'message' => 'Gagal Menghapus Data'];
+        }
+    }
+
+    public function getKode()
+    {
+        try {
+            $jenis = MJenisUjian::orderBy('kode', 'DESC')->limit(1)->get();
+            $default = 'K-' . str_pad('0', '3', '0', STR_PAD_LEFT);
+            $lastKode = $jenis->count() > 0 ? $jenis[0]->kode : $default;
+            $no = FuncHelper::getNextNo($lastKode);
+            return $no;
+        } catch (\Throwable $th) {
+            return "000";
         }
     }
 }

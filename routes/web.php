@@ -56,11 +56,12 @@ Route::group(['middleware' => ['auth', 'role:1']], function () {
     Route::get('/manajemen-user/aktifuser', [ManajemenUserController::class, 'aktifUser']);
     // jenis soal
     Route::get('/jenis-soal', [MasterJenisSoalController::class, 'index'])->name('jenis-soal');
-    Route::get('/jenis-soal/formAdd', [MasterJenisSoalController::class, 'create']);
+    Route::get('/jenis-soal/create', [MasterJenisSoalController::class, 'create']);
     Route::post('/jenis-soal/add', [MasterJenisSoalController::class, 'store']);
-    Route::get('/jenis-soal/formEdit', [MasterJenisSoalController::class, 'edit']);
+    Route::get('/jenis-soal/ubah', [MasterJenisSoalController::class, 'edit']);
     Route::put('/jenis-soal/edit', [MasterJenisSoalController::class, 'update']);
     Route::delete('/jenis-soal/hapus', [MasterJenisSoalController::class, 'destroy']);
+    Route::get('/jenis-soal/show', [MasterJenisSoalController::class, 'show']);
     // bank soal
     Route::get('/bank-soal', [BankSoalController::class, 'index'])->name('bank-soal');
     Route::get('/bank-soal/create', [BankSoalController::class, 'create'])->name('tambah-bank-soal');

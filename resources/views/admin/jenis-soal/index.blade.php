@@ -17,13 +17,14 @@
         </div>
     </div>
 
-    <div class="offcanvas offcanvas-end" id="add-new-record">
-        <div class="offcanvas-header border-bottom">
-            <h5 class="offcanvas-title" id="exampleModalLabel">Formulir</h5>
-            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body flex-grow-1">
-            <div id="content-form"></div>
+    <div class="modal fade" id="modal-form" data-bs-backdrop="static" data-bs-keyboard="false" aria-labelledby="modalForm"
+        aria-hidden="true" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+                <div id="content-form">
+
+                </div>
+            </div>
         </div>
     </div>
 @endsection

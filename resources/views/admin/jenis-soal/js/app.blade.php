@@ -1,7 +1,5 @@
 <script>
-    var tabelJenis, elModalForm, fv, btnAdd
-    var modalForm = document.querySelector('#add-new-record')
-    var contentForm = document.querySelector('#content-form')
+    var tabelJenis, elModal
     $(document).ready(function() {
         tabelJenis = $('.table-jenis').DataTable({
             processing: true,
@@ -27,116 +25,29 @@
             dom: '<"card-header flex-column flex-md-row border-bottom"<"head-label text-center"><"dt-action-buttons text-end pt-3 pt-md-0"B>><"row"<"col-sm-12 col-md-6 mt-5 mt-md-0"l><"col-sm-12 col-md-6 d-flex justify-content-center justify-content-md-end"f>>t<"row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
             buttons: [{
                 text: '<i class="ri-add-line ri-16px me-sm-2"></i> <span class="d-none d-sm-inline-block">Tambah</span>',
-                className: 'create-new btn btn-primary waves-effect waves-light'
+                className: 'create-new btn btn-primary waves-effect waves-light',
+                action: function(e, dt, node, config) {
+                    window.location.href = '/jenis-soal/create';
+                }
             }],
         });
         $('div.head-label').html('<h5 class="card-title mb-0">Data Jenis Soal</h5>');
-
-        btnAdd = document.querySelector('.create-new')
-        btnAdd.addEventListener('click', function() {
-            elModalForm = new bootstrap.Offcanvas(modalForm);
-            elModalForm.show()
-
-            var res = dxAjax(`/jenis-soal/formAdd`, {
-                id: ''
-            }, 'GET')
-            if (res.status == 200) {
-                contentForm.innerHTML = res.data
-                formJenis()
-            } else {
-                Swal.fire({
-                    title: 'Error!',
-                    text: res.message,
-                    icon: 'error',
-                    customClass: {
-                        confirmButton: 'btn btn-primary waves-effect waves-light'
-                    },
-                    buttonsStyling: false
-                });
-            }
-        })
     })
 
     function edit(id) {
-        elModalForm = new bootstrap.Offcanvas(modalForm)
-        elModalForm.show()
+        window.location.href = `/jenis-soal/ubah?id=${id}`
+    }
 
-        var res = dxAjax(`/jenis-soal/formEdit`, {
+    function show(id) {
+        var res = dxAjax(`/jenis-soal/show`, {
             id: id
         }, 'GET')
         if (res.status == 200) {
-            contentForm.innerHTML = res.data
-            formJenis()
-        } else {
-            Swal.fire({
-                title: 'Error!',
-                text: res.message,
-                icon: 'error',
-                customClass: {
-                    confirmButton: 'btn btn-primary waves-effect waves-light'
-                },
-                buttonsStyling: false
-            });
-        }
-    }
+            elModal = new bootstrap.Modal('#modal-form')
+            elModal.show()
 
-    function formJenis() {
-        var form = document.querySelector('#form-add-new-record')
-        FormValidation.formValidation(form, {
-            fields: {
-                kode: {
-                    validators: {
-                        notEmpty: {
-                            message: 'Kode harus diisi'
-                        }
-                    }
-                },
-                jenis: {
-                    validators: {
-                        notEmpty: {
-                            message: 'Jenis harus diisi'
-                        }
-                    }
-                }
-            },
-            plugins: {
-                trigger: new FormValidation.plugins.Trigger(),
-                bootstrap5: new FormValidation.plugins.Bootstrap5({
-                    eleValidClass: '',
-                    rowSelector: '.col-sm-12'
-                }),
-                submitButton: new FormValidation.plugins.SubmitButton(),
-                autoFocus: new FormValidation.plugins.AutoFocus()
-            },
-            init: instance => {
-                instance.on('plugins.message.placed', function(e) {
-                    if (e.element.parentElement.classList.contains('input-group')) {
-                        e.element.parentElement.insertAdjacentElement('afterend', e
-                            .messageElement);
-                    }
-                });
-            }
-        }).on('core.form.valid', function() {
-            saveForm()
-        })
-    }
-
-    function saveForm() {
-        var action = document.querySelector('#action').value
-        var method = action == 'add' ? 'POST' : 'PUT'
-        var res = dxAjax(`/jenis-soal/${action}`, $('#form-add-new-record').serialize(), method)
-        if (res.status == 200) {
-            elModalForm.hide()
-            Swal.fire({
-                title: 'Berhasil!',
-                text: res.message,
-                icon: 'success',
-                customClass: {
-                    confirmButton: 'btn btn-primary waves-effect waves-light'
-                },
-                buttonsStyling: false
-            });
-            tabelJenis.ajax.reload(null, false)
+            var content = document.querySelector('#content-form')
+            content.innerHTML = res.data
         } else {
             Swal.fire({
                 title: 'Error!',

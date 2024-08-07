@@ -6,15 +6,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class MJenisUjian extends Model
+class MJenisUjianDet extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = 'm_jenis_ujians';
+    protected $table = 'm_jenis_ujian_dets';
     protected $guarded = ['id'];
-
-    public function detail()
-    {
-        return $this->hasMany(MJenisUjianDet::class, 'id_jenis', 'id', 'id');
-    }
 }
