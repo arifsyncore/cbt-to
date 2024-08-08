@@ -19,6 +19,9 @@
                     data: 'soal'
                 },
                 {
+                    data: 'tanggal'
+                },
+                {
                     data: 'jenis'
                 },
                 {

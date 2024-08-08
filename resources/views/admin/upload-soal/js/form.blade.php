@@ -6,6 +6,13 @@
     $(document).ready(function() {
         FormValidation.formValidation(form, {
                 fields: {
+                    nama: {
+                        validators: {
+                            notEmpty: {
+                                message: 'Nama harus diisi'
+                            }
+                        }
+                    },
                     soal: {
                         validators: {
                             notEmpty: {
@@ -73,6 +80,9 @@
     })
 
     function saveForm() {
+        var btnSimpan = document.querySelector('.btn-submit')
+        btnSimpan.disabled = true
+        btnSimpan.innerHTML = `<span class="spinner-border me-1" role="status" aria-hidden="true"></span> Mohon Tunggu`
         var action = document.querySelector('#action').value
         var method = action == 'add' ? 'POST' : 'PUT'
         var res = dxAjax(`/upload-soal/${action}`, $('#form-upload-soal').serialize(), method)
@@ -86,7 +96,9 @@
                 },
                 buttonsStyling: false
             });
-            window.location.href = '/upload-soal'
+            setTimeout(function() {
+                window.location.href = '/upload-soal'
+            }, 1000);
         } else {
             Swal.fire({
                 title: 'Error!',
@@ -97,6 +109,8 @@
                 },
                 buttonsStyling: false
             });
+            btnSimpan.disabled = false
+            btnSimpan.innerHTML = `Simpan`
         }
     }
 

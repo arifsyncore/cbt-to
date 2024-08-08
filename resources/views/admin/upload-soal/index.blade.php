@@ -10,6 +10,7 @@
                     <tr>
                         <th>Kode Soal</th>
                         <th>Nama Soal</th>
+                        <th>Tanggal Berlaku</th>
                         <th>Jenis Pengerjaan</th>
                         <th>Tipe Soal</th>
                         <th>Aksi</th>

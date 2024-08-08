@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\admin\MJenis;
 use App\Models\admin\MUploadSoal;
 use App\Models\MBankSoal;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\DataTables;
@@ -19,13 +20,19 @@ class UploadSoalController extends Controller
     public function index()
     {
         if (request()->ajax()) {
-            $data = MUploadSoal::with('soal', 'jenis')->get();
+            $data = MUploadSoal::with('soal', 'jenis')->orderBy('tanggal_mulai', 'ASC')->get();
             return DataTables::of($data)
                 ->addColumn('kode_soal', function ($data) {
                     return $data->soal ? $data->soal->kode : '';
                 })
                 ->addColumn('soal', function ($data) {
-                    return $data->soal ? $data->soal->nama_soal : '';
+                    return $data->nama;
+                })
+                ->addColumn('tanggal', function ($data) {
+                    $tanggal_mulai = Carbon::parse($data->tanggal_mulai)->translatedFormat('d F Y H:i:s');
+                    $tanggal_selesai = Carbon::parse($data->tanggal_selesai)->translatedFormat('d F Y H:i:s');
+                    $tanggal = $tanggal_mulai . ' Sampai ' . $tanggal_selesai;
+                    return $tanggal;
                 })
                 ->addColumn('jenis', function ($data) {
                     return $data->soal ? $data->jenis->nama_jenis : '';
@@ -40,7 +47,7 @@ class UploadSoalController extends Controller
                     </button>
                     ';
                     return $button;
-                })->rawColumns(['aksi'])
+                })->rawColumns(['aksi', 'tanggal'])
                 ->make(true);
         }
         return view('admin.upload-soal.index');
@@ -76,12 +83,11 @@ class UploadSoalController extends Controller
                 FuncHelper::dxInsert(new MUploadSoal(), [
                     'id_jenis' => $request->jenis,
                     'id_bank_soal' => $request->soal,
+                    'nama' => $request->nama,
                     'type_soal' => $request->tipe,
                     'tanggal_mulai' => $request->tanggal_mulai,
                     'tanggal_selesai' => $request->tanggal_selesai,
                     'durasi' => $request->durasi,
-                    'acak_soal' => $request->acak_soal,
-                    'acak_opsi' => $request->acak_opsi,
                 ]);
             });
             return ['status' => 200, 'message' => 'Berhasil menyimpan data'];
@@ -131,11 +137,10 @@ class UploadSoalController extends Controller
                     'id_jenis' => $request->jenis,
                     'id_bank_soal' => $request->soal,
                     'type_soal' => $request->tipe,
+                    'nama' => $request->nama,
                     'tanggal_mulai' => $request->tanggal_mulai,
                     'tanggal_selesai' => $request->tanggal_selesai,
                     'durasi' => $request->durasi,
-                    'acak_soal' => $request->acak_soal,
-                    'acak_opsi' => $request->acak_opsi,
                 ]);
             });
             return ['status' => 200, 'message' => 'Berhasil mengubah data'];

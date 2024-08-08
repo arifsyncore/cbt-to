@@ -9,6 +9,7 @@ use App\Models\admin\MJenis;
 use App\Models\admin\MJenisUjian;
 use App\Models\admin\MJenisUjianDet;
 use App\Models\admin\MSoal;
+use App\Models\admin\MUploadSoal;
 use App\Models\MBankSoal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -136,6 +137,10 @@ class BankSoalController extends Controller
     public function destroy(Request $request)
     {
         try {
+            $check = MUploadSoal::where('id_bank_soal', $request->id)->get();
+            if (count($check) > 0) {
+                return ['status' => 500, 'message' => 'Bank soal sedang digunakan'];
+            }
             DB::transaction(function () use ($request) {
                 FuncHelper::dxDelete(new MBankSoal(), ['id' => $request->id]);
                 FuncHelper::dxDelete(new MSoal(), ['id_bank_soal' => $request->id]);

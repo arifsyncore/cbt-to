@@ -35,6 +35,15 @@
                         </div>
                         <hr>
                         <div class="row mb-2">
+                            <div class="col-12 col-md-12 col-sm-12 mb-4">
+                                <div class="form-floating form-floating-outline upload-soal">
+                                    <div class="form-floating form-floating-outline upload-soal">
+                                        <input type="text" class="form-control" id="nama" name="nama"
+                                            placeholder="Nama" value="{{ $action == 'edit' ? $data->nama : '' }}" />
+                                        <label for="floatingInput">Nama</label>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="col-6 col-md-6 col-sm-12 mb-4">
                                 <div class="form-floating form-floating-outline upload-soal">
                                     <select id="selectpickerBasic" class="selectpicker w-100" name="jenis"
@@ -86,42 +95,11 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="row mb-4">
-                            <div class="col-2 col-md-2 col-sm-6 mb-4">
-                                <div
-                                    class="bank-soal form-check custom-option custom-option-icon {{ $action == 'edit' ? ($data->acak_soal == '1' ? 'checked' : '') : '' }}">
-                                    <label class="form-check-label custom-option-content" for="acak_soal">
-                                        <span class="custom-option-body">
-                                            <i class="ri-shuffle-line"></i>
-                                            <span class="custom-option-title mb-2"> Acak Soal </span>
-                                            <small> Soal Akan diacak </small>
-                                        </span>
-                                        <input class="form-check-input" type="checkbox" value="1" id="acak_soal"
-                                            name="acak_soal"
-                                            {{ $action == 'edit' ? ($data->acak_soal == '1' ? 'checked' : '') : '' }} />
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-2 col-md-2 col-sm-6 mb-4">
-                                <div
-                                    class="bank-soal form-check custom-option custom-option-icon {{ $action == 'edit' ? ($data->acak_opsi == '1' ? 'checked' : '') : '' }}">
-                                    <label class="form-check-label custom-option-content" for="acak_opsi">
-                                        <span class="custom-option-body">
-                                            <i class="ri-shuffle-line"></i>
-                                            <span class="custom-option-title mb-2"> Acak Jawaban </span>
-                                            <small> Soal Akan diacak </small>
-                                        </span>
-                                        <input class="form-check-input" type="checkbox" value="1" id="acak_opsi"
-                                            name="acak_opsi"
-                                            {{ $action == 'edit' ? ($data->acak_opsi == '1' ? 'checked' : '') : '' }} />
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
+                        <hr>
                         <div class="text-end">
-                            <button type="submit" class="btn btn-primary data-submit me-sm-4 me-1">Simpan</button>
-                            <a href="{{ route('upload-soal') }}" type="reset"
-                                class="btn btn-outline-secondary">Batal</a>
+                            <button type="submit"
+                                class="btn btn-primary data-submit me-sm-4 me-1 btn-submit">Simpan</button>
+                            <a href="{{ route('upload-soal') }}" type="reset" class="btn btn-outline-secondary">Batal</a>
                         </div>
                     </div>
                 </form>
