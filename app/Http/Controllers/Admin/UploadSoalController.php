@@ -53,9 +53,9 @@ class UploadSoalController extends Controller
     {
         $title = 'Tambah';
         $action = 'add';
-        $bank_soals = MBankSoal::with('detail')->withCount('detail')->get();
+        $bank_soals = MBankSoal::with('detail', 'jenis')->withCount('detail')->get();
         $bank_soals = $bank_soals->filter(function ($bank_soals) {
-            return $bank_soals->jml_soal == $bank_soals->detail_count;
+            return $bank_soals->jenis->detail->sum('jml_soal') == $bank_soals->detail_count;
         });
         $tipe_soals = MJenis::all();
         return view('admin.upload-soal.components.form', compact(

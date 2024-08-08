@@ -16,8 +16,6 @@ return new class extends Migration
             $table->integer('id_jenis')->nullable();
             $table->string('nama_soal')->nullable();
             $table->string('kode', 10)->nullable();
-            $table->decimal('jml_soal', 10, 2)->nullable();
-            $table->decimal('bobot_soal', 10, 2)->nullable();
             $table->decimal('jml_opsi_jwb')->nullable();
             $table->dateTime('created_at')->nullable();
             $table->smallInteger('user_create')->nullable()->default(0);

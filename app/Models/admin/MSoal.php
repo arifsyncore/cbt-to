@@ -18,4 +18,9 @@ class MSoal extends Model
     {
         return $this->belongsTo(MBankSoal::class, 'id_bank_soal', 'id', 'id');
     }
+
+    public function jenissoal()
+    {
+        return $this->belongsTo(MJenisUjianDet::class, 'id_jenis_det', 'id', 'id');
+    }
 }

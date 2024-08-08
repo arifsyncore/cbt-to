@@ -16,9 +16,6 @@
                 "sLengthMenu": "Tampilkan _MENU_ entri",
             },
             columns: [{
-                    data: 'nomor_soal'
-                },
-                {
                     data: 'soal'
                 },
                 {
@@ -26,6 +23,9 @@
                 },
                 {
                     data: 'jawaban'
+                },
+                {
+                    data: 'jenis_soal'
                 },
                 {
                     data: 'aksi'
@@ -135,6 +135,13 @@
         var form = document.querySelector('#form-soal')
         FormValidation.formValidation(form, {
             fields: {
+                jenis_soal: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Jenis soal harus dipilih'
+                        }
+                    }
+                },
                 soal: {
                     validators: {
                         notEmpty: {
@@ -221,9 +228,11 @@
                 },
                 buttonsStyling: false
             });
-            check(res.bank)
+            // check(res.bank)
             elFormModal.hide()
-            tabelSoal.ajax.reload(null, false)
+            setTimeout(function() {
+                window.location.reload()
+            }, 500);
         } else {
             Swal.fire({
                 title: 'Error!',
@@ -254,7 +263,7 @@
                                         <div class="card-body">
                                             <h3 class="card-title text-white text-center font-weight-bold">Belum Selesai
                                             </h3>
-                                            <p class="card-text text-center">Soal sudah belum siap digunakan</p>
+                                            <p class="card-text text-center">Soal belum siap digunakan</p>
                                         </div>
                                     </div>`
         }

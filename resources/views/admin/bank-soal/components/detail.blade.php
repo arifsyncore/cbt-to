@@ -19,21 +19,46 @@
                                         <tr>
                                             <td>Kode Soal</td>
                                             <td>{{ $bank_soal->kode }}</td>
+                                            <td></td>
                                         </tr>
                                         <tr>
                                             <td>Nama Soal</td>
                                             <td>{{ $bank_soal->nama_soal }}</td>
+                                            <td></td>
                                         </tr>
                                         <tr>
                                             <td>Total Harus Dibuat</td>
-                                            <td>{{ round($bank_soal->jml_soal) }} Soal</td>
+                                            <td>{{ round($bank_soal->jenis->detail->sum('jml_soal')) }} Soal</td>
+                                            <td></td>
                                         </tr>
+                                    </tbody>
+                                </table>
+                                <h5>Jenis Soal</h5>
+                                <table class="table table-bordered">
+                                    <col style="width: 50%">
+                                    <col style="width: 25%">
+                                    <col style="width: 25%">
+                                    <thead>
+                                        <tr>
+                                            <th>Nama</th>
+                                            <th>Jumlah Soal</th>
+                                            <th>Jumlah Soal Dibuat</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($bank_soal->jenis->detail as $det)
+                                            <tr>
+                                                <td>{{ $det->nama }}</td>
+                                                <td>{{ round($det->jml_soal) }}</td>
+                                                <td>{{ round($det->soal->count()) }}</td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                         <div class="col-4 col-md-4 col-sm-4 mb-4">
-                            @if ($bank_soal->detail->count() >= $bank_soal->jml_soal)
+                            @if ($bank_soal->detail->count() >= $bank_soal->jenis->detail->sum('jml_soal'))
                                 <div class="indikator">
                                     <div class="card bg-success text-white">
                                         <div class="card-header text-white text-center">Pembuatan Soal Selesai</div>
@@ -50,7 +75,7 @@
                                         <div class="card-body">
                                             <h3 class="card-title text-white text-center font-weight-bold">Belum Selesai
                                             </h3>
-                                            <p class="card-text text-center">Soal sudah belum siap digunakan</p>
+                                            <p class="card-text text-center">Soal belum siap digunakan</p>
                                         </div>
                                     </div>
                                 </div>
@@ -65,17 +90,17 @@
                     </div>
                     <div class="card-datatable table-responsive pt-0">
                         <table class="table-soal table table-bordered">
-                            <col style="width: 5%;">
-                            <col style="width: 30%;">
                             <col style="width: 40%;">
+                            <col style="width: 40%;">
+                            <col style="width: 5%;">
+                            <col style="width: 5%;">
                             <col style="width: 10%;">
-                            <col style="width: 15%;">
                             <thead>
                                 <tr>
-                                    <th>No</th>
                                     <th>Soal</th>
                                     <th>Opsi</th>
                                     <th>Jawaban</th>
+                                    <th>Jenis Soal</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>

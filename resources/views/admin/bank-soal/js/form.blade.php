@@ -86,7 +86,38 @@
         }
     })
 
+    var jenis = document.querySelector('#jenis_soal')
+    jenis.addEventListener('change', function() {
+        var id = this.value
+        getFromJenis(id)
+    })
+
+    function getFromJenis(id) {
+        var res = dxAjax('/bank-soal/get-from-jenis', {
+            id: id
+        }, 'GET')
+        if (res.status == 200) {
+            var bobot = document.querySelector('#bobot_soal')
+            var jml = document.querySelector('#jml_soal')
+            bobot.value = Math.round(res.data ? res.data.detail_sum_bobot_soal : 0)
+            jml.value = Math.round(res.data ? res.data.detail_sum_jml_soal : 0)
+        } else {
+            Swal.fire({
+                title: 'Error!',
+                text: res.message,
+                icon: 'error',
+                customClass: {
+                    confirmButton: 'btn btn-primary waves-effect waves-light'
+                },
+                buttonsStyling: false
+            });
+        }
+    }
+
     function saveForm() {
+        var btnSimpan = document.querySelector('.btn-submit')
+        btnSimpan.disabled = true
+        btnSimpan.innerHTML = `<span class="spinner-border me-1" role="status" aria-hidden="true"></span> Mohon Tunggu`
         var action = document.querySelector('#action').value
         var method = action == 'add' ? 'POST' : 'PUT'
         var res = dxAjax(`/bank-soal/${action}`, $('#form-bank-soal').serialize(), method)
@@ -100,7 +131,9 @@
                 },
                 buttonsStyling: false
             });
-            window.location.href = '/bank-soal'
+            setTimeout(function() {
+                window.location.href = '/bank-soal'
+            }, 2000);
         } else {
             Swal.fire({
                 title: 'Error!',
@@ -111,6 +144,8 @@
                 },
                 buttonsStyling: false
             });
+            btnSimpan.disabled = false
+            btnSimpan.innerHTML = `Simpan`
         }
     }
 </script>

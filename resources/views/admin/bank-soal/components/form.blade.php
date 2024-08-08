@@ -17,11 +17,47 @@
                     <input type="hidden" id="id_jadwal" name="id_jadwal"
                         value="{{ $action == 'edit' ? $data->jadwal->id : '' }}">
                     <div class="card-body">
+                        <div class="divider">
+                            <div class="divider-text">Jenis Soal</div>
+                        </div>
+                        <div class="row mb-4">
+                            <div class="col-4 col-md-4 col-sm-12">
+                                <div class="bank-soal form-floating form-floating-outline mb-6">
+                                    <select class="form-select" id="jenis_soal" name="jenis_soal"
+                                        aria-label="Default select example">
+                                        <option value="">Jenis Soal</option>
+                                        @foreach ($jenis_soals as $jenis)
+                                            <option value="{{ $jenis->id }}"
+                                                {{ $action == 'edit' ? ($data->id_jenis == $jenis->id ? 'selected' : '') : '' }}>
+                                                {{ $jenis->jenis }}</option>
+                                        @endforeach
+                                    </select>
+                                    <label for="exampleFormControlSelect1">Jenis Soal</label>
+                                </div>
+                            </div>
+                            <div class="col-4 col-md-4 col-sm-12">
+                                <div class="bank-soal form-floating form-floating-outline">
+                                    <input type="number" class="form-control" id="jml_soal" name="jml_soal"
+                                        placeholder="0" value="" disabled />
+                                    <label for="floatingInput">Jumlah Soal</label>
+                                </div>
+                            </div>
+                            <div class="col-4 col-md-4 col-sm-12">
+                                <div class="bank-soal form-floating form-floating-outline">
+                                    <input type="number" class="form-control" id="bobot_soal" name="bobot_soal"
+                                        placeholder="0" value="" disabled />
+                                    <label for="floatingInput">Bobot Soal</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="divider">
+                            <div class="divider-text">Detail Bank Soal</div>
+                        </div>
                         <div class="row mb-4">
                             <div class="col-4 col-md-4 col-sm-12 mb-4">
                                 <div class="bank-soal form-floating form-floating-outline">
                                     <input type="text" class="form-control" id="kode" name="kode"
-                                        placeholder="Kode" value="{{ $action == 'edit' ? $data->kode : '' }}" />
+                                        placeholder="Kode" value="{{ $action == 'edit' ? $data->kode : $kode }}" readonly />
                                     <label for="floatingInput">Kode</label>
                                 </div>
                             </div>
@@ -33,36 +69,9 @@
                                 </div>
                             </div>
                             <div class="col-4 col-md-4 col-sm-12">
-                                <div class="bank-soal form-floating form-floating-outline">
-                                    <select id="selectpickerBasic" class="selectpicker w-100" name="jenis_soal"
-                                        data-style="btn-default">
-                                        <option value="">Jenis Soal</option>
-                                        @foreach ($jenis_soals as $jenis)
-                                            <option value="{{ $jenis->id }}"
-                                                {{ $action == 'edit' ? ($data->id_jenis == $jenis->id ? 'selected' : '') : '' }}>
-                                                {{ $jenis->jenis }}</option>
-                                        @endforeach
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="col-4 col-md-4 col-sm-12">
-                                <div class="bank-soal form-floating form-floating-outline">
-                                    <input type="number" class="form-control" id="jml_soal" name="jml_soal"
-                                        placeholder="0" value="{{ $action == 'edit' ? round($data->jml_soal) : '' }}" />
-                                    <label for="floatingInput">Jumlah Soal</label>
-                                </div>
-                            </div>
-                            <div class="col-4 col-md-4 col-sm-12">
-                                <div class="bank-soal form-floating form-floating-outline">
-                                    <input type="number" class="form-control" id="bobot_soal" name="bobot_soal"
-                                        placeholder="0" value="{{ $action == 'edit' ? round($data->bobot_soal) : '' }}" />
-                                    <label for="floatingInput">Bobot Soal</label>
-                                </div>
-                            </div>
-                            <div class="col-4 col-md-4 col-sm-12">
-                                <div class="bank-soal form-floating form-floating-outline">
-                                    <select id="selectpickerBasic" class="selectpicker w-100" name="opsi_jawab"
-                                        data-style="btn-default">
+                                <div class="bank-soal form-floating form-floating-outline mb-6">
+                                    <select class="form-select" id="jenis_soal" name="opsi_jawab"
+                                        aria-label="Default select example">
                                         <option value="">Opsi Jawaban</option>
                                         <option value="3"
                                             {{ $action == 'edit' ? ($data->jml_opsi_jwb == 3 ? 'selected' : '') : '' }}>3
@@ -74,11 +83,13 @@
                                             {{ $action == 'edit' ? ($data->jml_opsi_jwb == 5 ? 'selected' : '') : '' }}>5
                                             (A, B, C, D, E)</option>
                                     </select>
+                                    <label for="exampleFormControlSelect1">Opsi Jawaban</label>
                                 </div>
                             </div>
                         </div>
                         <div class="text-end">
-                            <button type="submit" class="btn btn-primary data-submit me-sm-4 me-1">Simpan</button>
+                            <button type="submit"
+                                class="btn btn-primary data-submit me-sm-4 me-1 btn-submit">Simpan</button>
                             <a href="{{ route('bank-soal') }}" type="reset" class="btn btn-outline-secondary">Batal</a>
                         </div>
                     </div>

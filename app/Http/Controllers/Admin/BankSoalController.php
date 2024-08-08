@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Models\admin\MJadwal;
 use App\Models\admin\MJenis;
 use App\Models\admin\MJenisUjian;
+use App\Models\admin\MJenisUjianDet;
 use App\Models\admin\MSoal;
 use App\Models\MBankSoal;
 use Illuminate\Http\Request;
@@ -53,12 +54,12 @@ class BankSoalController extends Controller
         $action = 'add';
         $title = 'Tambah';
         $jenis_soals = MJenisUjian::all();
-        $types = MJenis::all();
+        $kode = $this->getKode();
         return view('admin.bank-soal.components.form', compact(
             'action',
             'title',
             'jenis_soals',
-            'types'
+            'kode',
         ));
     }
 
@@ -73,8 +74,6 @@ class BankSoalController extends Controller
                     'id_jenis' => $request->jenis_soal,
                     'nama_soal' => $request->nama,
                     'kode' => $request->kode,
-                    'jml_soal' => $request->jml_soal,
-                    'bobot_soal' => $request->bobot_soal,
                     'jml_opsi_jwb' => $request->opsi_jawab,
                 ]);
             });
@@ -122,8 +121,6 @@ class BankSoalController extends Controller
                     'id_jenis' => $request->jenis_soal,
                     'nama_soal' => $request->nama,
                     'kode' => $request->kode,
-                    'jml_soal' => $request->jml_soal,
-                    'bobot_soal' => $request->bobot_soal,
                     'jml_opsi_jwb' => $request->opsi_jawab,
                 ]);
             });
@@ -149,10 +146,38 @@ class BankSoalController extends Controller
         }
     }
 
+    public function getFromJenis(Request $request)
+    {
+        try {
+            $data = MJenisUjian::with('detail')
+                ->withSum('detail', 'jml_soal')
+                ->withSum('detail', 'bobot_soal')
+                ->where('id', $request->id)
+                ->first();
+            return ['status' => 200, 'data' => $data];
+        } catch (\Throwable $th) {
+            return ['status' => 500, 'message' => 'Terdapat kesalahan !'];
+        }
+    }
+
+    public function getKode()
+    {
+
+        try {
+            $bank = MBankSoal::orderBy('kode', 'DESC')->limit(1)->get();
+            $default = 'S-' . str_pad('0', '3', '0', STR_PAD_LEFT);
+            $lastKode = $bank->count() > 0 ? $bank[0]->kode : $default;
+            $no = FuncHelper::getNextNo($lastKode);
+            return $no;
+        } catch (\Throwable $th) {
+            return "000";
+        }
+    }
+
     public function detail(Request $request)
     {
         if (request()->ajax()) {
-            $data = MSoal::where('id_bank_soal', $request->id)->orderBy('nomor_soal', 'ASC')->get();
+            $data = MSoal::with('jenissoal')->where('id_bank_soal', $request->id)->orderBy('id_jenis_det', 'ASC')->get();
             return DataTables::of($data)
                 ->addColumn('soal', function ($data) {
                     $field = $data->soal;
@@ -174,6 +199,9 @@ class BankSoalController extends Controller
                     $field = $data->jawaban;
                     return $field;
                 })
+                ->addColumn('jenis_soal', function ($data) {
+                    return $data->jenissoal->nama;
+                })
                 ->addColumn('aksi', function ($data) {
                     $button = '
                     <button type="button" class="btn btn-icon btn-warning btn-fab demo waves-effect waves-light" onclick="edit(' . $data->id . ')">
@@ -187,7 +215,9 @@ class BankSoalController extends Controller
                 })->rawColumns(['aksi', 'soal', 'opsi'])
                 ->make(true);
         }
-        $bank_soal = MBankSoal::with('detail')->where('id', $request->id)->first();
+        $bank_soal = MBankSoal::with('detail', 'jenis')
+            ->where('id', $request->id)
+            ->first();
         return view('admin.bank-soal.components.detail', compact(
             'bank_soal'
         ));
@@ -198,7 +228,7 @@ class BankSoalController extends Controller
         try {
             $action = 'add';
             $title = 'Tambah';
-            $bank_soal = MBankSoal::where('id', $request->id)->first();
+            $bank_soal = MBankSoal::with('jenis')->where('id', $request->id)->first();
             $view = view('admin.bank-soal.components.form-detail', compact(
                 'bank_soal',
                 'action',
@@ -213,9 +243,15 @@ class BankSoalController extends Controller
     public function detailAdd(Request $request)
     {
         try {
+            $jenis = MJenisUjianDet::where('id',  $request->jenis_soal)->first();
+            $dibuat = MSoal::where('id_jenis_det', $request->jenis_soal)->count();
+            if (round($jenis->jml_soal) <= $dibuat) {
+                return ['status' => 500, 'message' => 'Jenis soal ini sudah terpenuhi'];
+            }
             DB::transaction(function () use ($request) {
                 FuncHelper::dxInsert(new MSoal(), [
                     'id_bank_soal' => $request->id_bank,
+                    'id_jenis_det' => $request->jenis_soal,
                     'nomor_soal' => $this->getNo($request->id_bank),
                     'soal' => $request->soal,
                     'opsi_a' => $request->opsi_a,
@@ -270,6 +306,7 @@ class BankSoalController extends Controller
         try {
             DB::transaction(function () use ($request) {
                 FuncHelper::dxUpdate(new MSoal(), ['id' => $request->id], [
+                    'id_jenis_det' => $request->jenis_soal,
                     'soal' => $request->soal,
                     'opsi_a' => $request->opsi_a,
                     'opsi_b' => $request->opsi_b,

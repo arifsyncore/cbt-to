@@ -12,4 +12,9 @@ class MJenisUjianDet extends Model
 
     protected $table = 'm_jenis_ujian_dets';
     protected $guarded = ['id'];
+
+    public function soal()
+    {
+        return $this->hasMany(MSoal::class, 'id_jenis_det', 'id', 'id');
+    }
 }
