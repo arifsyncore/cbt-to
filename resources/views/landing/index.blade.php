@@ -83,7 +83,7 @@
                                             <div class="card-body">
                                                 <div class="row">
                                                     <div class="col-6">
-                                                        <h5 class="card-title">{{ $soal->soal->nama_soal }}</h5>
+                                                        <h5 class="card-title">{{ $soal->nama }}</h5>
                                                     </div>
                                                     <div class="col-6 text-end">
                                                         <span

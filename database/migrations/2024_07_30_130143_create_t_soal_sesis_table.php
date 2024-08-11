@@ -17,6 +17,7 @@ return new class extends Migration
             $table->integer('id_user')->nullable();
             $table->integer('id_ruang_ujian')->nullable();
             $table->integer('id_soal')->nullable();
+            $table->integer('id_jenis_det')->nullable();
             $table->string('no')->nullable();
             $table->string('jawaban', 50)->nullable();
             $table->string('status', 50)->nullable();

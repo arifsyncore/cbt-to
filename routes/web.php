@@ -36,7 +36,6 @@ Auth::routes();
 // landing page
 Route::get('/', [LandingPageController::class, 'index'])->name('landing');
 Route::get('/soal-to', [LandingPageController::class, 'detailTo']);
-Route::get('/soal-to/add', [LandingPageController::class, 'addUjian']);
 // login
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
 Route::post('post-login-member', [LoginController::class, 'login'])->name('post-login');
@@ -87,15 +86,19 @@ Route::group(['middleware' => ['auth', 'role:1']], function () {
 
 Route::group(['middleware' => ['auth', 'role:2']], function () {
     Route::get('/user', [UserController::class, 'index'])->name('user');
+    Route::get('/soal-to/add', [RuangUjianController::class, 'addRuangUjian']);
 
     Route::get('/ruang-ujian', [RuangUjianController::class, 'index'])->name('ruang-ujian');
-    Route::get('/ruang-ujian/add', [RuangUjianController::class, 'addRuangUjian'])->name('add-ruang-ujian');
     Route::get('/ruang-ujian/detail', [RuangUjianController::class, 'detail']);
     // halaman ujian
     Route::get('/try-out/add', [UjianController::class, 'addUjian']);
     Route::get('/try-out/to', [UjianController::class, 'index'])->name('try-out');
-    Route::get('/try-out/loadsoal', [UjianController::class, 'loadSoal']);
-    Route::get('/try-out/tandaisoal', [UjianController::class, 'tandaiSoal']);
-    Route::get('/try-out/lanjutsoal', [UjianController::class, 'lanjutSoal']);
-    Route::get('/try-out/loadsoalselanjutnya', [UjianController::class, 'loadSoalSelanjutnya']);
+    Route::get('/try-out/load-soal', [UjianController::class, 'loadSoal']);
+    Route::get('/try-out/simpan-jawaban', [UjianController::class, 'simpanJawaban']);
+    Route::get('/try-out/submit', [UjianController::class, 'submitJawaban']);
+
+    // Route::get('/try-out/loadsoal', [UjianController::class, 'loadSoal']);
+    // Route::get('/try-out/tandaisoal', [UjianController::class, 'tandaiSoal']);
+    // Route::get('/try-out/lanjutsoal', [UjianController::class, 'lanjutSoal']);
+    // Route::get('/try-out/loadsoalselanjutnya', [UjianController::class, 'loadSoalSelanjutnya']);
 });

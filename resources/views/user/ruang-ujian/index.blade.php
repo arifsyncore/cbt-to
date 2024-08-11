@@ -12,6 +12,7 @@
                         <th>Nama Soal</th>
                         <th>Tanggal Mulai</th>
                         <th>Tanggal Selesai</th>
+                        <th>Status Pengerjaan</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>

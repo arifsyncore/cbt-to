@@ -10,7 +10,8 @@
             <div class="card">
                 <div class="row g-0">
                     <div class="col-md-4">
-                        <img class="card-img card-img-left" src="../../assets/img/elements/12.jpg" alt="Card image">
+                        <img class="card-img card-img-left" src="{{ asset('/assets/img/gambar/image-01.jpg') }}"
+                            alt="Card image">
                     </div>
                     <div class="col-md-8">
                         <div class="card-body">

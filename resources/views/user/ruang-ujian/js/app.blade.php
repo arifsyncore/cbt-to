@@ -25,6 +25,9 @@
                     data: 'tanggal_selesai'
                 },
                 {
+                    data: 'status'
+                },
+                {
                     data: 'aksi'
                 },
             ],

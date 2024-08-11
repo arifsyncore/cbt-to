@@ -19,7 +19,6 @@ class RuangUjianController extends Controller
      */
     public function index()
     {
-        // Carbon::parse($soal->tanggal_selesai)->translatedFormat('d F Y H:i:s')
         if (request()->ajax()) {
             $data = TRuangUjian::with('soalto')->where('id_user', Auth::user()->id)->get();
             return DataTables::of($data)
@@ -27,13 +26,23 @@ class RuangUjianController extends Controller
                     return $data->soalto ? $data->soalto->soal->kode : '';
                 })
                 ->addColumn('nama_soal', function ($data) {
-                    return $data->soalto ? $data->soalto->soal->nama_soal : '';
+                    return $data->soalto ? $data->soalto->nama : '';
                 })
                 ->addColumn('tanggal_mulai', function ($data) {
                     return $data->soalto ? Carbon::parse($data->soalto->tanggal_mulai)->translatedFormat('d F Y H:i:s') : '';
                 })
                 ->addColumn('tanggal_selesai', function ($data) {
                     return $data->soalto ? Carbon::parse($data->soalto->tanggal_selesai)->translatedFormat('d F Y H:i:s') : '';
+                })
+                ->addColumn('status', function ($data) {
+                    if ($data->status == 'Belum Dikerjakan') {
+                        $badge = '<span class="badge rounded-pill bg-label-primary">' . $data->status . '</span>';
+                    } else if ($data->status == 'Sedang Dikerjakan') {
+                        $badge = '<span class="badge rounded-pill bg-label-warning">' . $data->status . '</span>';
+                    } else if ($data->status == 'Selesai') {
+                        $badge = '<span class="badge rounded-pill bg-label-success">' . $data->status . '</span>';
+                    }
+                    return $badge;
                 })
                 ->addColumn('aksi', function ($data) {
                     $button = '
@@ -42,7 +51,7 @@ class RuangUjianController extends Controller
                     </button>
                     ';
                     return $button;
-                })->rawColumns(['aksi'])
+                })->rawColumns(['aksi', 'status'])
                 ->make(true);
         }
         return view('user.ruang-ujian.index');
@@ -52,11 +61,16 @@ class RuangUjianController extends Controller
     {
         try {
             DB::transaction(function () use ($request) {
-                FuncHelper::dxInsert(new TRuangUjian(), [
-                    'id_user' => Auth::user()->id,
-                    'id_upload_soal' => $request->id,
-                    'nomor_ujian' => $this->getNo($request->id)
-                ]);
+                $checkExist = TRuangUjian::where('id_user', Auth::user()->id)
+                    ->where('id_upload_soal', $request->id)->first();
+                if (!$checkExist) {
+                    FuncHelper::dxInsert(new TRuangUjian(), [
+                        'id_user' => Auth::user()->id,
+                        'id_upload_soal' => $request->id,
+                        'nomor_ujian' => $this->getNo($request->id),
+                        'status' => 'Belum Dikerjakan'
+                    ]);
+                }
             });
             return redirect()->route('ruang-ujian');
         } catch (\Throwable $th) {
@@ -67,6 +81,7 @@ class RuangUjianController extends Controller
     public function detail(Request $request)
     {
         $data = TRuangUjian::with('soalto')->where('id', $request->id)->first();
+        // return $data->soalto->soal->jenis->detail;
         return view('user.ruang-ujian.detail', compact('data'));
     }
 
