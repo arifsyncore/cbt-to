@@ -18,4 +18,9 @@ class TRuangUjian extends Model
     {
         return $this->belongsTo(MUploadSoal::class, 'id_upload_soal', 'id', 'id');
     }
+
+    public function sesiuser()
+    {
+        return $this->hasOne(TSesiUser::class, 'id_ruang_ujian', 'id', 'id');
+    }
 }

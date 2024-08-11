@@ -152,7 +152,12 @@
             if (sisaWaktu < 0) {
                 clearInterval(countdown);
                 countdownElement.innerHTML = "Waktu sudah habis!";
-                submitWaktuHabis()
+                var res = dxAjax(`/try-out/submit`, {
+                    id_ruang: id_ruang_ujian
+                }, 'GET')
+                if (res.status == 200) {
+                    window.location.href = `/ruang-ujian`
+                }
             }
         }, 1000);
     }

@@ -37,4 +37,8 @@
     function detail(id) {
         window.location.href = `/ruang-ujian/detail?id=${id}`
     }
+
+    function hasil(id) {
+        window.location.href = `/ruang-ujian/hasil?id=${id}`
+    }
 </script>

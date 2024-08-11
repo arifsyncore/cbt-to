@@ -122,7 +122,7 @@ class UjianController extends Controller
                 return ['status' => 500, 'message' => 'Waktu pengerjaan belum mulai, harap tunggu sampai tanggal yang sudah dijadwalkan'];
             }
             // cek sudah selesai atau belum
-            $checkStatus = TRuangUjian::where('id', $request->id)->first();
+            $checkStatus = TRuangUjian::where('id', $request->id)->where('status', 'Selesai')->first();
             if ($checkStatus) {
                 return ['status' => 500, 'message' => 'Soal try-out sudah selesai dikerjakan'];
             }
@@ -212,14 +212,42 @@ class UjianController extends Controller
             $id_soal_pertama = $request->nomor == null ? $id_soal_pertama : $request->nomor;
 
             $soal = TSoalSesi::with('soal')->where('id', $id_soal_pertama)->where('id_sesi', $sesi->id)->first();
-
-            $soalArr = [
-                'id' => $soal->id,
-                'no' => $soal->no,
-                'soal' => $soal->soal->soal,
-                'jml_opsi' => round($soal->soal->banksoal->jml_opsi_jwb),
-                'jawaban' => $soal->jawaban,
-                'opsi' => [
+            if (round($soal->soal->banksoal->jml_opsi_jwb) == 3) {
+                $opsi = [
+                    [
+                        'opsi' =>  $soal->soal->opsi_a,
+                        'value' => 'A'
+                    ],
+                    [
+                        'opsi' =>  $soal->soal->opsi_b,
+                        'value' => 'B'
+                    ],
+                    [
+                        'opsi' =>  $soal->soal->opsi_c,
+                        'value' => 'C'
+                    ],
+                ];
+            } else if (round($soal->soal->banksoal->jml_opsi_jwb) == 4) {
+                $opsi = [
+                    [
+                        'opsi' =>  $soal->soal->opsi_a,
+                        'value' => 'A'
+                    ],
+                    [
+                        'opsi' =>  $soal->soal->opsi_b,
+                        'value' => 'B'
+                    ],
+                    [
+                        'opsi' =>  $soal->soal->opsi_c,
+                        'value' => 'C'
+                    ],
+                    [
+                        'opsi' =>  $soal->soal->opsi_d,
+                        'value' => 'D'
+                    ],
+                ];
+            } else if (round($soal->soal->banksoal->jml_opsi_jwb) == 5) {
+                $opsi = [
                     [
                         'opsi' =>  $soal->soal->opsi_a,
                         'value' => 'A'
@@ -240,7 +268,15 @@ class UjianController extends Controller
                         'opsi' =>  $soal->soal->opsi_e,
                         'value' => 'E'
                     ],
-                ]
+                ];
+            }
+            $soalArr = [
+                'id' => $soal->id,
+                'no' => $soal->no,
+                'soal' => $soal->soal->soal,
+                'jml_opsi' => round($soal->soal->banksoal->jml_opsi_jwb),
+                'jawaban' => $soal->jawaban,
+                'opsi' => $opsi,
             ];
             $maxNo = max($nomor);
             $viewSoal = view('user.ruang-cbt.components.soal', compact('soalArr', 'maxNo'))->render();

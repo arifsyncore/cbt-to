@@ -4,8 +4,10 @@ namespace App\Http\Controllers\User;
 
 use App\Helpers\FuncHelper;
 use App\Http\Controllers\Controller;
+use App\Models\admin\MJenisUjianDet;
 use App\Models\admin\MUploadSoal;
 use App\Models\user\TRuangUjian;
+use App\Models\user\TSoalSesi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -45,11 +47,23 @@ class RuangUjianController extends Controller
                     return $badge;
                 })
                 ->addColumn('aksi', function ($data) {
-                    $button = '
-                     <button type="button" class="btn btn-icon btn-success btn-fab demo waves-effect waves-light" onclick="detail(' . $data->id . ')">
-                        <span class="tf-icons ri-arrow-right-fill ri-22px"></span>
-                    </button>
-                    ';
+                    if ($data->status == 'Selesai') {
+                        $button = '
+                         <button type="button" class="btn btn-icon btn-success btn-fab demo waves-effect waves-light" onclick="detail(' . $data->id . ')">
+                            <span class="tf-icons ri-arrow-right-fill ri-22px"></span>
+                        </button>
+                         <button type="button" class="btn btn-icon btn-primary btn-fab demo waves-effect waves-light" onclick="hasil(' . $data->id . ')">
+                            <span class="tf-icons ri-information-line ri-22px"></span>
+                        </button>
+                        ';
+                    } else {
+                        $button = '
+                         <button type="button" class="btn btn-icon btn-success btn-fab demo waves-effect waves-light" onclick="detail(' . $data->id . ')">
+                            <span class="tf-icons ri-arrow-right-fill ri-22px"></span>
+                        </button>
+                        ';
+                    }
+
                     return $button;
                 })->rawColumns(['aksi', 'status'])
                 ->make(true);
@@ -81,8 +95,42 @@ class RuangUjianController extends Controller
     public function detail(Request $request)
     {
         $data = TRuangUjian::with('soalto')->where('id', $request->id)->first();
-        // return $data->soalto->soal->jenis->detail;
         return view('user.ruang-ujian.detail', compact('data'));
+    }
+
+    public function hasil(Request $request)
+    {
+        $data = TRuangUjian::with('soalto', 'sesiuser')->where('status', 'Selesai')->where('id', $request->id)->first();
+        if (!$data) {
+            return redirect()->route('ruang-ujian');
+        }
+        $soal = TSoalSesi::with('soal')
+            ->where('id_ruang_ujian', $data->id)
+            ->where('id_sesi', $data->sesiuser->id)
+            ->orderBy('no', 'ASC')
+            ->get();
+        $jmlBenar = 0;
+        foreach ($soal as $key => $value) {
+            if ($value->jawaban == $value->soal->jawaban) {
+                $jmlBenar++;
+            }
+        }
+        return view('user.ruang-ujian.hasil', compact('data', 'jmlBenar'));
+    }
+
+    public function hasilJenis(Request $request)
+    {
+        try {
+            $soal = TSoalSesi::with('soal')
+                ->where('id_jenis_det', $request->id_ruang)
+                ->where('id_sesi', $request->id_sesi)
+                ->orderBy('no', 'ASC')
+                ->get();
+            $view = view('user.ruang-ujian.components.detail', compact('soal'))->render();
+            return ['status' => 200, 'data' => $view];
+        } catch (\Throwable $th) {
+            return ['status' => 500, 'message' => 'Error'];
+        }
     }
 
     /**
