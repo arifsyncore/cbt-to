@@ -57,10 +57,10 @@
             </button>
             <ul class="navbar-nav me-auto p-4 p-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link fw-medium" aria-current="page" href="#">Beranda</a>
+                    <a class="nav-link fw-medium" aria-current="page" href="{{ url('/') }}">Beranda</a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link fw-medium" href="landing-page.html#landingFeatures">Kategori</a>
+                    <a class="nav-link fw-medium" href="{{ url('/kategori') }}">Kategori</a>
                 </li>
             </ul>
         </div>

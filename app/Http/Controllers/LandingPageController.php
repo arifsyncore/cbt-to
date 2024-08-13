@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\FuncHelper;
+use App\Models\admin\MJenisUjian;
 use App\Models\admin\MUploadSoal;
 use App\Models\MBankSoal;
 use App\Models\user\TRuangUjian;
@@ -19,8 +20,10 @@ class LandingPageController extends Controller
     public function index()
     {
         $bank_soal = MUploadSoal::with('soal')->get();
+        $jenis_soal = MJenisUjian::with('detail')->get();
         return view('landing.index', compact(
-            'bank_soal'
+            'bank_soal',
+            'jenis_soal'
         ));
     }
 
@@ -41,6 +44,26 @@ class LandingPageController extends Controller
         }
     }
 
+    public function kategori(Request $request)
+    {
+        $kategori = MJenisUjian::with('detail')->orderBy('kode')->get();
+        return view('landing.kategori', compact(
+            'kategori'
+        ));
+    }
+
+    public function detailKat(Request $request)
+    {
+        $data = MJenisUjian::with('detailSoal')->where('id', $request->id)->first();
+        $soal = MUploadSoal::with('soal')->whereHas('soal', function ($q) use ($data) {
+            $q->where('id_jenis', $data->id);
+        })->get();
+        return view('landing.detail-kategori', compact(
+            'data',
+            'soal'
+        ));
+    }
+
     /**
      * Show the form for creating a new resource.
      */
@@ -52,9 +75,7 @@ class LandingPageController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
-    {
-    }
+    public function store(Request $request) {}
 
     /**
      * Display the specified resource.

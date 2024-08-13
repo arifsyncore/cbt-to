@@ -36,6 +36,8 @@ Auth::routes();
 // landing page
 Route::get('/', [LandingPageController::class, 'index'])->name('landing');
 Route::get('/soal-to', [LandingPageController::class, 'detailTo']);
+Route::get('/kategori', [LandingPageController::class, 'kategori']);
+Route::get('/kategori/detail', [LandingPageController::class, 'detailKat']);
 // login
 Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
 Route::post('post-login-member', [LoginController::class, 'login'])->name('post-login');

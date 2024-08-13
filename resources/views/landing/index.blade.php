@@ -16,38 +16,28 @@
                 <div class="swiper-reviews-carousel overflow-hidden mb-12 pt-4">
                     <div class="swiper" id="swiper-reviews">
                         <div class="swiper-wrapper">
-                            <div class="swiper-slide">
-                                <div class="row h-100">
-                                    <div class="col-md-12 col-lg-12 d-flex align-items-center">
-                                        <div class="card bg-transparent shadow-none ms-6">
-                                            <div class="card-body">
-                                                <h5 class="card-title">Special title treatment</h5>
-                                                <p class="card-text">With supporting text below as a natural lead-in to
-                                                    additional content.</p>
-                                                <a href="javascript:void(0)"
-                                                    class="btn btn-primary waves-effect waves-light">Go
-                                                    somewhere</a>
+                            @foreach ($jenis_soal as $jenis)
+                                <div class="swiper-slide">
+                                    <div class="row h-100">
+                                        <div class="col-md-12 col-lg-12 d-flex align-items-center">
+                                            <div class="card bg-transparent shadow-none ms-6">
+                                                <div class="card-body">
+                                                    <h5 class="card-title">{{ $jenis->jenis }}</h5>
+                                                    <p class="card-text">Detail Soal</p>
+                                                    @foreach ($jenis->detail as $det)
+                                                        <ul class="list-group list-group-flush mb-3">
+                                                            <li class="list-group-item">{{ $det->nama }}</li>
+                                                        </ul>
+                                                    @endforeach
+                                                    <a href="javascript:void(0)"
+                                                        class="btn btn-primary waves-effect waves-light selengkapnya-kat"
+                                                        data-id="{{ $jenis->id }}">Selengkapnya</a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="swiper-slide">
-                                <div class="row h-100">
-                                    <div class="col-md-12 col-lg-12 d-flex align-items-center">
-                                        <div class="card bg-transparent shadow-none ms-6">
-                                            <div class="card-body">
-                                                <h5 class="card-title">Special title treatment</h5>
-                                                <p class="card-text">With supporting text below as a natural lead-in to
-                                                    additional content.</p>
-                                                <a href="javascript:void(0)"
-                                                    class="btn btn-primary waves-effect waves-light">Go
-                                                    somewhere</a>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            @endforeach
                         </div>
                         <!-- Add Arrows -->
                         <div class="swiper-button-next"></div>
@@ -171,6 +161,14 @@
             btn.addEventListener('click', function() {
                 let id = this.dataset.id
                 window.location.href = `/soal-to?id=${id}`
+            })
+        })
+
+        const btnDetailKat = document.querySelectorAll('.selengkapnya-kat')
+        btnDetailKat.forEach(function(btn) {
+            btn.addEventListener('click', function() {
+                let id = this.dataset.id
+                window.location.href = `/kategori/detail?id=${id}`
             })
         })
     </script>
