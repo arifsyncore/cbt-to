@@ -83,7 +83,11 @@
                         </div>
                     </div>
                     <hr>
-                    <div class="text-end">
+                    <div class="d-flex justify-content-end">
+                        <button type="button" class="btn btn btn-success waves-effect waves-light mx-1"
+                            onclick="importSoal()">
+                            <span class="tf-icons ri-upload-2-line ri-16px me-sm-2"></span>Import Soal
+                        </button>
                         <button type="button" class="btn btn btn-primary waves-effect waves-light" onclick="formDetail()">
                             <span class="tf-icons ri-add-line ri-16px me-sm-2"></span>Tambah Soal
                         </button>
@@ -120,10 +124,53 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="import-soal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="exampleModalLabel4">Import Soal</h4>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="form-import" onsubmit="return false" enctype="multipart/form-data">
+                    @csrf
+                    <input type="hidden" name="id_bank_soal_import" id="id_bank_soal_import" value="{{ $bank_soal->id }}">
+                    <div class="modal-body">
+                        <div class="form-floating form-floating-outline import-soal mb-6">
+                            <select class="form-select" id="jenis_soal_import" name="jenis_soal_import"
+                                aria-label="Default select example">
+                                <option value="">Jenis Soal</option>
+                                @foreach ($bank_soal->jenis->detail as $jenis)
+                                    <option value="{{ $jenis->id }}">
+                                        {{ $jenis->nama }}</option>
+                                @endforeach
+                            </select>
+                            <label for="exampleFormControlSelect1">Jenis Soal</label>
+                        </div>
+                        <div class="mb-4 import-soal">
+                            <label for="formFile" class="form-label">File</label>
+                            <input type="file" class="form-control formFile" id="formFile" name="file_import"
+                                value="">
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-outline-secondary waves-effect" data-bs-dismiss="modal">
+                            Batal
+                        </button>
+                        <button type="button" class="btn btn-warning waves-effect btn-template"
+                            onclick="downloadTemplate()">
+                            Download Template
+                        </button>
+                        <button type="submit"
+                            class="btn btn-primary waves-effect waves-light btn-simpan-upload">Simpan</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 @endsection
 @section('js')
     <script src="{{ asset('/assets/vendor/libs/quill/katex.js') }}"></script>
     <script src="{{ asset('/assets/vendor/libs/quill/quill.js') }}"></script>
-    {{-- <script src="{{ asset('/assets/js/forms-editors.js') }}"></script> --}}
+
     @include('admin.bank-soal.js.detail')
 @endsection

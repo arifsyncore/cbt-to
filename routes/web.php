@@ -77,6 +77,8 @@ Route::group(['middleware' => ['auth', 'role:1']], function () {
     Route::get('/bank-soal/detail/form-edit', [BankSoalController::class, 'editDetail']);
     Route::put('/bank-soal/detail/edit', [BankSoalController::class, 'detailEdit']);
     Route::delete('/bank-soal/detail/hapus', [BankSoalController::class, 'detailHapus']);
+    Route::post('/bank-soal/detail/import', [BankSoalController::class, 'importSoal']);
+    Route::get('/bank-soal/download-template', [BankSoalController::class, 'downloadTemplate']);
     // upload soal
     Route::get('/upload-soal', [UploadSoalController::class, 'index'])->name('upload-soal');
     Route::get('/upload-soal/create', [UploadSoalController::class, 'create']);
@@ -100,9 +102,5 @@ Route::group(['middleware' => ['auth', 'role:2']], function () {
     Route::get('/try-out/load-soal', [UjianController::class, 'loadSoal']);
     Route::get('/try-out/simpan-jawaban', [UjianController::class, 'simpanJawaban']);
     Route::get('/try-out/submit', [UjianController::class, 'submitJawaban']);
-
-    // Route::get('/try-out/loadsoal', [UjianController::class, 'loadSoal']);
-    // Route::get('/try-out/tandaisoal', [UjianController::class, 'tandaiSoal']);
-    // Route::get('/try-out/lanjutsoal', [UjianController::class, 'lanjutSoal']);
-    // Route::get('/try-out/loadsoalselanjutnya', [UjianController::class, 'loadSoalSelanjutnya']);
+    // peringkat
 });

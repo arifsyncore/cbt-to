@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Exports\TemplateSoalExport;
 use App\Helpers\FuncHelper;
 use App\Http\Controllers\Controller;
+use App\Imports\ImportSoal;
 use App\Models\admin\MJadwal;
 use App\Models\admin\MJenis;
 use App\Models\admin\MJenisUjian;
@@ -13,6 +15,7 @@ use App\Models\admin\MUploadSoal;
 use App\Models\MBankSoal;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\DataTables;
 
 class BankSoalController extends Controller
@@ -337,5 +340,20 @@ class BankSoalController extends Controller
         } catch (\Throwable $th) {
             return ['status' => 500, 'message' => 'Gagal Menghapus Data'];
         }
+    }
+
+    public function importSoal(Request $request)
+    {
+        try {
+            Excel::import(new ImportSoal($request), $request->file('import'));
+            return ['status' => 200, 'message' => 'Berhasil import gambar'];
+        } catch (\Throwable $th) {
+            return ['status' => 500, 'message' => 'Gagal import soal'];
+        }
+    }
+
+    public function downloadTemplate()
+    {
+        return Excel::download(new TemplateSoalExport, 'template_upload_soal.xlsx');
     }
 }

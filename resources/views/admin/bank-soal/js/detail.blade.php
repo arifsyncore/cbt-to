@@ -1,5 +1,5 @@
 <script>
-    var tabelSoal, elFormModal
+    var tabelSoal, elFormModal, elImportModal
     var bank_id = document.querySelector('#bank_id')
     var formContent = document.querySelector('#form-content')
     $(document).ready(function() {
@@ -267,5 +267,123 @@
                                         </div>
                                     </div>`
         }
+    }
+
+    function importSoal() {
+        var modal = document.querySelector('#import-soal')
+        elImportModal = new bootstrap.Modal(modal)
+        elImportModal.show()
+        formImport()
+    }
+
+    function formImport() {
+        var form = document.querySelector('#form-import')
+        FormValidation.formValidation(form, {
+            fields: {
+                jenis_soal_import: {
+                    validators: {
+                        notEmpty: {
+                            message: 'Jenis soal harus dipilih'
+                        }
+                    }
+                },
+                file_import: {
+                    validators: {
+                        notEmpty: {
+                            message: 'File harus diisi'
+                        },
+                        file: {
+                            extension: 'xls,xlsx',
+                            type: 'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+                            message: 'Ekstensi file harus .xlsx',
+                        },
+                    }
+                },
+            },
+            plugins: {
+                trigger: new FormValidation.plugins.Trigger(),
+                bootstrap5: new FormValidation.plugins.Bootstrap5({
+                    eleValidClass: '',
+                    rowSelector: '.import-soal'
+                }),
+                submitButton: new FormValidation.plugins.SubmitButton(),
+                autoFocus: new FormValidation.plugins.AutoFocus()
+            },
+            init: instance => {
+                instance.on('plugins.message.placed', function(e) {
+                    if (e.element.parentElement.classList.contains('input-group')) {
+                        e.element.parentElement.insertAdjacentElement('afterend', e
+                            .messageElement);
+                    }
+                });
+            }
+        }).on('core.form.valid', function() {
+            saveFormImport()
+        })
+    }
+
+    async function saveFormImport() {
+        var btnImportSoal = document.querySelector('.btn-simpan-upload')
+        btnImportSoal.disabled = true
+        btnImportSoal.innerHTML =
+            `<span class="spinner-border me-1" role="status" aria-hidden="true"></span> Mohon Tunggu`
+        var file_import = document.querySelector('.formFile')
+        var id_bank = document.querySelector('#id_bank_soal_import')
+        var jenis = document.querySelector('#jenis_soal_import')
+        var formData = new FormData()
+        var dataImport = file_import.files[0]
+        formData.append('import', dataImport)
+        formData.append('id_bank', id_bank.value)
+        formData.append('id_jenis', jenis.value)
+        var res = await requestData('/bank-soal/detail/import', 'POST', formData)
+        if (res.status == 200) {
+            Swal.fire({
+                title: 'Berhasil!',
+                text: res.message,
+                icon: 'success',
+                customClass: {
+                    confirmButton: 'btn btn-primary waves-effect waves-light'
+                },
+                buttonsStyling: false
+            });
+            setTimeout(function() {
+                window.location.reload()
+            }, 2000);
+        } else {
+            Swal.fire({
+                title: 'Error!',
+                text: res.message,
+                icon: 'error',
+                customClass: {
+                    confirmButton: 'btn btn-primary waves-effect waves-light'
+                },
+                buttonsStyling: false
+            });
+            btnImportSoal.disabled = false
+            btnImportSoal.innerHTML = `Simpan`
+        }
+    }
+
+    function downloadTemplate() {
+        window.open('/bank-soal/download-template', '_BLANK')
+    }
+
+    function requestData(url, method, body) {
+        return fetch(url, {
+                headers: {
+                    'X-CSRF-TOKEN': $('input[type="hidden"][name="_token"]').val(),
+                    'X-Requested-With': 'XMLHttpRequest'
+                },
+                method,
+                body,
+            })
+            .then(res => res.json())
+            .then(res => {
+                if (res.status != 200) {
+                    throw res
+                }
+
+                return res
+            })
     }
 </script>

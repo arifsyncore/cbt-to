@@ -1,0 +1,16 @@
+<table>
+    <thead>
+        <tr>
+            <th>nomor</th>
+            <th>soal</th>
+            <th>jawaban_a</th>
+            <th>jawaban_b</th>
+            <th>jawaban_c</th>
+            <th>jawaban_d</th>
+            <th>jawaban_e</th>
+            <th>jawaban_benar</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
