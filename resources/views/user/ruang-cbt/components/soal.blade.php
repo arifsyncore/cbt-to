@@ -8,7 +8,7 @@
                         id="defaultRadio{{ $opsi['value'] }}" data-no="{{ $soalArr['no'] }}"
                         data-idsoal="{{ $soalArr['id'] }}" {{ $soalArr['jawaban'] == $opsi['value'] ? 'checked' : '' }}>
                     <label class="form-check-label" for="defaultRadio{{ $opsi['value'] }}">
-                        {{ $opsi['opsi'] }}
+                        {{ $opsi['value'] }} . {{ $opsi['opsi'] }}
                     </label>
                 </div>
             </li>

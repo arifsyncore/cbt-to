@@ -104,15 +104,18 @@ class RuangUjianController extends Controller
         if (!$data) {
             return redirect()->route('ruang-ujian');
         }
-        $soal = TSoalSesi::with('soal')
+        $soal = TSoalSesi::with('soal', 'jenis')
             ->where('id_ruang_ujian', $data->id)
             ->where('id_sesi', $data->sesiuser->id)
             ->orderBy('no', 'ASC')
             ->get();
         $jmlBenar = 0;
         foreach ($soal as $key => $value) {
+            $bobotSoal = $value->jenis->bobot_soal;
+            $jml_soal = $value->jenis->jml_soal;
+            $nilai_soal = $bobotSoal / $jml_soal;
             if ($value->jawaban == $value->soal->jawaban) {
-                $jmlBenar++;
+                $jmlBenar += $nilai_soal;
             }
         }
         return view('user.ruang-ujian.hasil', compact('data', 'jmlBenar'));
@@ -124,7 +127,7 @@ class RuangUjianController extends Controller
             $soal = TSoalSesi::with('soal')
                 ->where('id_jenis_det', $request->id_ruang)
                 ->where('id_sesi', $request->id_sesi)
-                ->orderBy('no', 'ASC')
+                ->orderBy('id', 'ASC')
                 ->get();
             $view = view('user.ruang-ujian.components.detail', compact('soal'))->render();
             return ['status' => 200, 'data' => $view];

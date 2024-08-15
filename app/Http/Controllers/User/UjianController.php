@@ -203,15 +203,14 @@ class UjianController extends Controller
 
             $viewTab = view('user.ruang-cbt.components.tab-soal', compact('tabArray'))->render();
 
-            $id_soal_pertama = $tabArray[0]['detailTab'][0]['id'];
+            $id_soal_pertama = $tabArray[0]['detailTab'][0]['no'];
             $sesi = TSesiUser::where('id', $request->id_sesi)
                 ->where('id_user', Auth::user()->id)
                 ->where('id_ruang_ujian', $request->id_ruang)
                 ->first();
 
             $id_soal_pertama = $request->nomor == null ? $id_soal_pertama : $request->nomor;
-
-            $soal = TSoalSesi::with('soal')->where('id', $id_soal_pertama)->where('id_sesi', $sesi->id)->first();
+            $soal = TSoalSesi::with('soal')->where('no', $id_soal_pertama)->where('id_sesi', $sesi->id)->first();
             if (round($soal->soal->banksoal->jml_opsi_jwb) == 3) {
                 $opsi = [
                     [
@@ -458,7 +457,7 @@ class UjianController extends Controller
 
     public function getNo($id_sesi)
     {
-        $sesi_user = TSoalSesi::where('id_sesi', $id_sesi)->orderBy('no', 'DESC')->limit(1)->get();
+        $sesi_user = TSoalSesi::where('id_sesi', $id_sesi)->orderBy('id', 'DESC')->limit(1)->get();
         $default = 0;
         $lastNo = $sesi_user->count() > 0 ? $sesi_user[0]->no : $default;
         $no = FuncHelper::getNextNo($lastNo);

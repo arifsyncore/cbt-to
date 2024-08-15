@@ -2,6 +2,7 @@
 
 namespace App\Models\user;
 
+use App\Models\admin\MJenisUjianDet;
 use App\Models\admin\MSoal;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -22,5 +23,10 @@ class TSoalSesi extends Model
     public function soal()
     {
         return $this->belongsTo(MSoal::class, 'id_soal', 'id', 'id');
+    }
+
+    public function jenis()
+    {
+        return $this->belongsTo(MJenisUjianDet::class, 'id_jenis_det', 'id', 'id');
     }
 }
