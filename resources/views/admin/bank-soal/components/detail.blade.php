@@ -124,6 +124,17 @@
             </div>
         </div>
     </div>
+
+    <div class="modal fade" id="form-pilih-jenis" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-xl" role="document">
+            <div class="modal-content">
+                <div id="content-pilih-jenis">
+
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div class="modal fade" id="import-soal" tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
             <div class="modal-content">

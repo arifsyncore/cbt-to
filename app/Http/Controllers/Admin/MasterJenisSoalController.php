@@ -72,6 +72,9 @@ class MasterJenisSoalController extends Controller
                 if ($value['jml'] == null) {
                     return ['status' => 500, 'message' => 'Periksa kembali data yang anda input'];
                 }
+                if ($value['type_jenis'] == null || $value['type_jenis'] == '') {
+                    return ['status' => 500, 'message' => 'Periksa kembali data yang anda input'];
+                }
             }
             DB::transaction(function () use ($request) {
                 $jenis = FuncHelper::dxInsert(new MJenisUjian(), [
@@ -83,7 +86,8 @@ class MasterJenisSoalController extends Controller
                         'id_jenis' => $jenis->id,
                         'nama' => $value['nama'],
                         'bobot_soal' => $value['bobot'],
-                        'jml_soal' => $value['jml']
+                        'jml_soal' => $value['jml'],
+                        'type_jenis' => $value['type_jenis'],
                     ]);
                 }
             });
@@ -131,6 +135,20 @@ class MasterJenisSoalController extends Controller
     public function update(Request $request)
     {
         try {
+            foreach ($request['group-a'] as $key => $value) {
+                if ($value['nama'] == null) {
+                    return ['status' => 500, 'message' => 'Periksa kembali data yang anda input'];
+                }
+                if ($value['bobot'] == null) {
+                    return ['status' => 500, 'message' => 'Periksa kembali data yang anda input'];
+                }
+                if ($value['jml'] == null) {
+                    return ['status' => 500, 'message' => 'Periksa kembali data yang anda input'];
+                }
+                if ($value['type_jenis'] == null || $value['type_jenis'] == '') {
+                    return ['status' => 500, 'message' => 'Periksa kembali data yang anda input'];
+                }
+            }
             DB::transaction(function () use ($request) {
                 FuncHelper::dxUpdate(new MJenisUjian(), ['id' => $request->id], [
                     'kode' => $request->kode,
@@ -143,7 +161,8 @@ class MasterJenisSoalController extends Controller
                         'id_jenis' => $request->id,
                         'nama' => $value['nama'],
                         'bobot_soal' => $value['bobot'],
-                        'jml_soal' => $value['jml']
+                        'jml_soal' => $value['jml'],
+                        'type_jenis' => $value['type_jenis']
                     ]);
                 }
             });

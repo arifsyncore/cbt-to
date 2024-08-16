@@ -49,7 +49,7 @@
                                                                 <label for="form-repeater-1-1">Jenis Soal</label>
                                                             </div>
                                                         </div>
-                                                        <div class="mb-6 col-lg-3 col-xl-3 col-3 mb-0">
+                                                        <div class="mb-6 col-lg-2 col-xl-2 col-2 mb-0">
                                                             <div class="form-floating form-floating-outline">
                                                                 <input type="number" id="form-repeater-1-2"
                                                                     class="form-control" name="bobot"
@@ -58,13 +58,29 @@
                                                                 <label for="form-repeater-1-2">Bobot Soal</label>
                                                             </div>
                                                         </div>
-                                                        <div class="mb-6 col-lg-3 col-xl-3 col-3 mb-0">
+                                                        <div class="mb-6 col-lg-2 col-xl-2 col-2 mb-0">
                                                             <div class="form-floating form-floating-outline">
                                                                 <input type="number" id="form-repeater-1-3"
                                                                     class="form-control" name="jml"
                                                                     placeholder="Jumlah Soal"
                                                                     value="{{ round($detail->jml_soal) }}" />
                                                                 <label for="form-repeater-1-3">Jumlah Soal</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="mb-6 col-lg-2 col-xl-2 col-2 mb-0">
+                                                            <div class="form-floating form-floating-outline">
+                                                                <select class="form-select" id="form-repeater-1-4"
+                                                                    name="type_jenis" aria-label="Default select example">
+                                                                    <option value="">Pilih Tipe Penilaian</option>
+                                                                    <option value="benar_salah"
+                                                                        {{ $detail->type_jenis == 'benar_salah' ? 'selected' : '' }}>
+                                                                        Benar Salah</option>
+                                                                    <option value="nilai_jawaban"
+                                                                        {{ $detail->type_jenis == 'nilai_jawaban' ? 'selected' : '' }}>
+                                                                        Nilai Jawaban</option>
+                                                                </select>
+                                                                <label for="exampleFormControlSelect1">Tipe
+                                                                    Penilaian</label>
                                                             </div>
                                                         </div>
                                                         <div
@@ -90,7 +106,7 @@
                                                             <label for="form-repeater-1-1">Jenis Soal</label>
                                                         </div>
                                                     </div>
-                                                    <div class="mb-6 col-lg-3 col-xl-3 col-3 mb-0">
+                                                    <div class="mb-6 col-lg-2 col-xl-2 col-2 mb-0">
                                                         <div class="form-floating form-floating-outline">
                                                             <input type="number" id="form-repeater-1-2"
                                                                 class="form-control" name="bobot"
@@ -98,12 +114,23 @@
                                                             <label for="form-repeater-1-2">Bobot Soal</label>
                                                         </div>
                                                     </div>
-                                                    <div class="mb-6 col-lg-3 col-xl-3 col-3 mb-0">
+                                                    <div class="mb-6 col-lg-2 col-xl-2 col-2 mb-0">
                                                         <div class="form-floating form-floating-outline">
                                                             <input type="number" id="form-repeater-1-3"
                                                                 class="form-control" name="jml"
                                                                 placeholder="Jumlah Soal" />
                                                             <label for="form-repeater-1-3">Jumlah Soal</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="mb-6 col-lg-2 col-xl-2 col-2 mb-0">
+                                                        <div class="form-floating form-floating-outline">
+                                                            <select class="form-select" id="form-repeater-1-4"
+                                                                name="type_jenis" aria-label="Default select example">
+                                                                <option value="">Pilih Tipe Penilaian</option>
+                                                                <option value="benar_salah">Benar Salah</option>
+                                                                <option value="nilai_jawaban">Nilai Jawaban</option>
+                                                            </select>
+                                                            <label for="exampleFormControlSelect1">Tipe Penilaian</label>
                                                         </div>
                                                     </div>
                                                     <div

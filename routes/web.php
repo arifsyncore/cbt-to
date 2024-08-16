@@ -72,7 +72,8 @@ Route::group(['middleware' => ['auth', 'role:1']], function () {
     Route::delete('/bank-soal/hapus', [BankSoalController::class, 'destroy']);
     Route::get('/bank-soal/get-from-jenis', [BankSoalController::class, 'getFromJenis']);
     Route::get('/bank-soal/detail', [BankSoalController::class, 'detail']);
-    Route::get('/bank-soal/detail/form', [BankSoalController::class, 'formDetail']);
+    Route::get('/bank-soal/detail/pilih-jenis', [BankSoalController::class, 'pilihJenis']);
+    Route::get('/bank-soal/detail/form', [BankSoalController::class, 'formSoal']);
     Route::post('/bank-soal/detail/add', [BankSoalController::class, 'detailAdd']);
     Route::get('/bank-soal/detail/form-edit', [BankSoalController::class, 'editDetail']);
     Route::put('/bank-soal/detail/edit', [BankSoalController::class, 'detailEdit']);

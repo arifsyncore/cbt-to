@@ -54,3 +54,21 @@ function dxAjax(requestUrl, requestData, requestMethod) {
 
     return response
 }
+
+function requestDataAjax(url, method, body) {
+    return fetch(url, {
+        headers: {
+            'X-CSRF-TOKEN': $('input[type="hidden"][name="_token"]').val(),
+            'X-Requested-With': 'XMLHttpRequest'
+        },
+        method,
+        body,
+    })
+        .then(res => res.json())
+        .then(res => {
+            if (res.status != 200) {
+                throw res
+            }
+            return res
+        })
+}

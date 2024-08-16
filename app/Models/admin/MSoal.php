@@ -23,4 +23,14 @@ class MSoal extends Model
     {
         return $this->belongsTo(MJenisUjianDet::class, 'id_jenis_det', 'id', 'id');
     }
+
+    public function nilaijawaban()
+    {
+        return $this->hasMany(MNilaiJawaban::class, 'id_soal', 'id', 'id');
+    }
+
+    public function pembahasan()
+    {
+        return $this->hasOne(MPembahasan::class, 'id_soal', 'id', 'id');
+    }
 }

@@ -9,6 +9,13 @@
             <th>jawaban_d</th>
             <th>jawaban_e</th>
             <th>jawaban_benar</th>
+            <th>nilai_a</th>
+            <th>nilai_b</th>
+            <th>nilai_c</th>
+            <th>nilai_d</th>
+            <th>nilai_e</th>
+            <th>pembahasan</th>
+            <th>url_video</th>
         </tr>
     </thead>
     <tbody>

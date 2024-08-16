@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('m_jenis_ujian_dets', function (Blueprint $table) {
+        Schema::create('m_pembahasans', function (Blueprint $table) {
             $table->id();
-            $table->integer('id_jenis')->nullable();
-            $table->string('nama', 100)->nullable();
-            $table->decimal('bobot_soal', 10, 2)->nullable();
-            $table->decimal('jml_soal', 10, 2)->nullable();
-            $table->enum('type_jenis', ['benar_salah', 'nilai_jawaban'])->nullable();
+            $table->integer('id_soal')->nullable();
+            $table->text('pembahasan')->nullable();
+            $table->string('gambar')->nullable();
+            $table->text('url_video')->nullable();
             $table->dateTime('created_at')->nullable();
             $table->smallInteger('user_create')->nullable()->default(0);
             $table->dateTime('updated_at')->nullable();
@@ -32,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('m_jenis_ujian_dets');
+        Schema::dropIfExists('m_pembahasans');
     }
 };

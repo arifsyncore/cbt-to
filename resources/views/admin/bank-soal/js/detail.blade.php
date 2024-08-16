@@ -34,18 +34,45 @@
         })
     })
 
+    // function formDetail() {
+    //     var modalForm = document.querySelector('#form-detail-soal')
+    //     var contentForm = document.querySelector('#content-form')
+    //     elFormModal = new bootstrap.Modal(modalForm)
+    //     elFormModal.show()
+
+    //     var res = dxAjax(`/bank-soal/detail/form`, {
+    //         id: bank_id.value
+    //     }, 'GET')
+    //     if (res.status == 200) {
+    //         contentForm.innerHTML = res.data
+    //         formValidation()
+    //     } else {
+    //         Swal.fire({
+    //             title: 'Error!',
+    //             text: res.message,
+    //             icon: 'error',
+    //             customClass: {
+    //                 confirmButton: 'btn btn-primary waves-effect waves-light'
+    //             },
+    //             buttonsStyling: false
+    //         });
+    //     }
+    // }
+
     function formDetail() {
-        var modalForm = document.querySelector('#form-detail-soal')
-        var contentForm = document.querySelector('#content-form')
-        elFormModal = new bootstrap.Modal(modalForm)
+        var modal = document.querySelector('#form-pilih-jenis')
+        var content = document.querySelector('#content-pilih-jenis')
+
+        elFormModal = new bootstrap.Modal(modal)
         elFormModal.show()
 
-        var res = dxAjax(`/bank-soal/detail/form`, {
+        var res = dxAjax(`/bank-soal/detail/pilih-jenis`, {
             id: bank_id.value
         }, 'GET')
+
         if (res.status == 200) {
-            contentForm.innerHTML = res.data
-            formValidation()
+            content.innerHTML = res.data
+            pilihJenis()
         } else {
             Swal.fire({
                 title: 'Error!',
@@ -59,32 +86,46 @@
         }
     }
 
-    function edit(id) {
-        var modalForm = document.querySelector('#form-detail-soal')
-        var contentForm = document.querySelector('#content-form')
-        elFormModal = new bootstrap.Modal(modalForm)
-        elFormModal.show()
-
-        var res = dxAjax(`/bank-soal/detail/form-edit`, {
-            id: id,
-            id_bank: bank_id.value
-        }, 'GET')
-
-        if (res.status == 200) {
-            contentForm.innerHTML = res.data
-            formValidation()
-        } else {
-            Swal.fire({
-                title: 'Error!',
-                text: res.message,
-                icon: 'error',
-                customClass: {
-                    confirmButton: 'btn btn-primary waves-effect waves-light'
-                },
-                buttonsStyling: false
-            });
-        }
+    function pilihJenis() {
+        var BtnPilihJenis = document.querySelectorAll('.pilih-jenis')
+        BtnPilihJenis.forEach(btn => btn.addEventListener('click', function() {
+            var id = btn.dataset.id
+            window.location.href = `/bank-soal/detail/form?id_bank=${bank_id.value}&id=${id}`
+        }))
     }
+
+    function edit(obj) {
+        var id = obj.dataset.id
+        var id_jenis = obj.dataset.id_jenis
+        window.location.href = `/bank-soal/detail/form-edit?id_bank=${bank_id.value}&id_jenis=${id_jenis}&id=${id}`
+    }
+
+    // function edit(id) {
+    //     var modalForm = document.querySelector('#form-detail-soal')
+    //     var contentForm = document.querySelector('#content-form')
+    //     elFormModal = new bootstrap.Modal(modalForm)
+    //     elFormModal.show()
+
+    //     var res = dxAjax(`/bank-soal/detail/form-edit`, {
+    //         id: id,
+    //         id_bank: bank_id.value
+    //     }, 'GET')
+
+    //     if (res.status == 200) {
+    //         contentForm.innerHTML = res.data
+    //         formValidation()
+    //     } else {
+    //         Swal.fire({
+    //             title: 'Error!',
+    //             text: res.message,
+    //             icon: 'error',
+    //             customClass: {
+    //                 confirmButton: 'btn btn-primary waves-effect waves-light'
+    //             },
+    //             buttonsStyling: false
+    //         });
+    //     }
+    // }
 
     function hapus(id) {
         Swal.fire({
