@@ -101,6 +101,12 @@
                     <div data-i18n="Ruang Ujian">Ruang Ujian</div>
                 </a>
             </li>
+            <li class="menu-item {{ Request::is('peringkat') ? 'active' : '' }}">
+                <a href="{{ route('peringkat') }}" class="menu-link">
+                    <i class="menu-icon tf-icons ri-trophy-line"></i>
+                    <div data-i18n="Peringkat">Peringkat</div>
+                </a>
+            </li>
         @endif
     </ul>
 </aside>

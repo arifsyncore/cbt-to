@@ -3,6 +3,7 @@
 namespace App\Models\user;
 
 use App\Models\admin\MUploadSoal;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -22,5 +23,10 @@ class TRuangUjian extends Model
     public function sesiuser()
     {
         return $this->hasOne(TSesiUser::class, 'id_ruang_ujian', 'id', 'id');
+    }
+
+    public function pengguna()
+    {
+        return $this->belongsTo(User::class, 'id_user', 'id', 'id');
     }
 }

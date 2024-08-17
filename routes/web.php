@@ -9,6 +9,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LandingPageController;
+use App\Http\Controllers\User\PeringkatController;
 use App\Http\Controllers\User\RuangUjianController;
 use App\Http\Controllers\User\UjianController;
 use App\Http\Controllers\User\UserController;
@@ -105,4 +106,9 @@ Route::group(['middleware' => ['auth', 'role:2']], function () {
     Route::get('/try-out/simpan-jawaban', [UjianController::class, 'simpanJawaban']);
     Route::get('/try-out/submit', [UjianController::class, 'submitJawaban']);
     // peringkat
+    Route::get('/peringkat', [PeringkatController::class, 'index'])->name('peringkat');
+    Route::get('/peringkat/detail', [PeringkatController::class, 'detail']);
+    Route::get('/peringkat/listperingkat/{id}', [PeringkatController::class, 'listPeringkat']);
+    Route::get('/peringkat/detail-soal', [PeringkatController::class, 'detailSoal']);
+    Route::get('/peringkat/listperingkat/detail/{data}', [PeringkatController::class, 'listPeringkatDetail']);
 });
