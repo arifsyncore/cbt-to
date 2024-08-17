@@ -171,6 +171,8 @@ return [
         Yajra\DataTables\DataTablesServiceProvider::class,
         App\Providers\FuncHelperServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        // Cohensive\Embed\EmbedServiceProvider::class,
+        Cohensive\OEmbed\OEmbedServiceProvider::class
     ])->toArray(),
 
     /*
@@ -188,6 +190,7 @@ return [
         // 'Example' => App\Facades\Example::class,
         'FuncHelper' => App\Helpers\FuncHelper::class,
         'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'OEmbed' => \Cohensive\OEmbed\Facades\OEmbed::class,
     ])->toArray(),
 
 ];

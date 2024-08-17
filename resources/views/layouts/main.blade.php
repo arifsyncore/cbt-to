@@ -47,7 +47,7 @@
     <link rel="stylesheet" href="{{ asset('/assets/vendor/libs/sweetalert2/sweetalert2.css') }}" />
     <link rel="stylesheet" href="{{ asset('/assets/vendor/libs/spinkit/spinkit.css') }}" />
     <link rel="stylesheet" href="{{ asset('/assets/vendor/libs/bootstrap-select/bootstrap-select.css') }}" />
-
+    <x-embed-styles />
     <!-- Page CSS -->
     @yield('css')
 

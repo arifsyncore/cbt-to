@@ -97,6 +97,7 @@ Route::group(['middleware' => ['auth', 'role:2']], function () {
     Route::get('/ruang-ujian/detail', [RuangUjianController::class, 'detail']);
     Route::get('/ruang-ujian/hasil', [RuangUjianController::class, 'hasil']);
     Route::get('/ruang-ujian/hasil/jenis', [RuangUjianController::class, 'hasilJenis']);
+    Route::get('/ruang-ujian/hasil/loadsoal', [RuangUjianController::class, 'loadSoal']);
     // halaman ujian
     Route::get('/try-out/add', [UjianController::class, 'addUjian']);
     Route::get('/try-out/to', [UjianController::class, 'index'])->name('try-out');
