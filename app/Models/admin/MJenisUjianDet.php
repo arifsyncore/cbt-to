@@ -17,4 +17,9 @@ class MJenisUjianDet extends Model
     {
         return $this->hasMany(MSoal::class, 'id_jenis_det', 'id', 'id');
     }
+
+    public function jenis()
+    {
+        return $this->belongsTo(MJenisUjian::class, 'id_jenis', 'id', 'id');
+    }
 }

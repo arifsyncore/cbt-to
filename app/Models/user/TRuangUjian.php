@@ -29,4 +29,9 @@ class TRuangUjian extends Model
     {
         return $this->belongsTo(User::class, 'id_user', 'id', 'id');
     }
+
+    public function soalsesi()
+    {
+        return $this->hasMany(TSoalSesi::class, 'id_ruang_ujian', 'id', 'id');
+    }
 }

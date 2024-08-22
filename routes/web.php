@@ -7,6 +7,7 @@ use App\Http\Controllers\admin\MasterJenisSoalController;
 use App\Http\Controllers\Admin\UploadSoalController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\User\PeringkatController;
@@ -47,7 +48,8 @@ Route::get('/register', [RegisterController::class, 'showRegister'])->name('daft
 Route::post('/post-register-member', [RegisterController::class, 'register'])->name('post-register');
 
 Route::group(['middleware' => ['auth', 'role:1,2']], function () {
-    Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard/getChart', [DashboardController::class, 'getChart']);
 });
 
 Route::group(['middleware' => ['auth', 'role:1']], function () {
