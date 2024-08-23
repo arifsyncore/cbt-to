@@ -83,7 +83,56 @@ document.addEventListener('DOMContentLoaded', function (e) {
                 message: 'Please agree terms & conditions'
               }
             }
-          }
+          },
+          nama_alias: {
+            validators: {
+              notEmpty: {
+                message: 'Nama panggilan harus diisi'
+              },
+            }
+          },
+          no_telp: {
+            validators: {
+              notEmpty: {
+                message: 'Nomor Whatsapps harus diisi'
+              },
+            }
+          },
+          jekel: {
+            validators: {
+              notEmpty: {
+                message: 'Jenis kelamin harus dipilih'
+              },
+            }
+          },
+          tanggal_lahir: {
+            validators: {
+              notEmpty: {
+                message: 'Tanggal lahir harus diisi'
+              },
+            }
+          },
+          provinsi: {
+            validators: {
+              notEmpty: {
+                message: 'Provinsi harus diisi'
+              },
+            }
+          },
+          kab_kota: {
+            validators: {
+              notEmpty: {
+                message: 'Kab / Kota harus dipilih'
+              },
+            }
+          },
+          alamat_lengkap: {
+            validators: {
+              notEmpty: {
+                message: 'Alamat harus diisi'
+              },
+            }
+          },
         },
         plugins: {
           trigger: new FormValidation.plugins.Trigger(),

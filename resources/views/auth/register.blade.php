@@ -1,7 +1,10 @@
 @extends('auth.layouts.main')
 
 @section('title', 'Register')
-
+@section('css')
+    <link rel="stylesheet" href="{{ asset('/assets/vendor/libs/select2/select2.css') }}" />
+    <link rel="stylesheet" href="{{ asset('/assets/vendor/libs/flatpickr/flatpickr.css') }}" />
+@endsection
 @section('content')
     <div class="position-relative">
         <div class="authentication-wrapper authentication-basic container-p-y p-4 p-sm-0">
@@ -82,6 +85,68 @@
                                 </div>
                                 <div class="col-sm-12 col-md-12 cl-xl-12 mb-5">
                                     <div class="form-floating form-floating-outline">
+                                        <input type="text" class="form-control" id="nama_alias" name="nama_alias"
+                                            placeholder="Masukkan nama Panggilan" autofocus />
+                                        <label for="username">Nama Panggilan</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-12 cl-xl-12 mb-5">
+                                    <div class="form-floating form-floating-outline">
+                                        <input type="text" class="form-control" id="no_telp" name="no_telp"
+                                            placeholder="Masukkan no Whatsapp" autofocus />
+                                        <label for="username">No Whatsapp</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-12 cl-xl-12 mb-5">
+                                    <div class="form-floating form-floating-outline">
+                                        <select id="jekel" name="jekel" class="soal-select form-select"
+                                            data-allow-clear="true">
+                                            <option value="">Pilih Jenis Kelamin</option>
+                                            <option value="Laki-laki">Laki-laki</option>
+                                            <option value="Perempuan">Perempuan</option>
+                                        </select>
+                                        <label for="exampleFormControlSelect1">Pilih Jenis Kelamin</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-12 cl-xl-12 mb-5">
+                                    <div class="form-floating form-floating-outline">
+                                        <input type="text" class="form-control flatpickr-input active"
+                                            placeholder="YYYY-MM-DD" id="flatpickr-date" name="tanggal_lahir"
+                                            readonly="readonly">
+                                        <label for="flatpickr-date">Tanggal Lahir</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-12 cl-xl-12 mb-5">
+                                    <div class="form-floating form-floating-outline">
+                                        <select id="provinsi" name="provinsi" class="soal-select form-select"
+                                            data-allow-clear="true">
+                                            <option value="">Pilih Provinsi</option>
+                                            @foreach ($dataProvinsi as $prov)
+                                                <option value="{{ $prov['name'] }}" data-id="{{ $prov['id'] }}">
+                                                    {{ $prov['name'] }}</option>
+                                            @endforeach
+                                        </select>
+                                        <label for="exampleFormControlSelect1">Pilih Provinsi</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-12 cl-xl-12 mb-5">
+                                    <div class="form-floating form-floating-outline">
+                                        <select id="kab_kota" name="kab_kota" class="soal-select form-select"
+                                            data-allow-clear="true">
+                                            <option value="">Pilih Kota / Kab</option>
+                                        </select>
+                                        <label for="exampleFormControlSelect1">Pilih Kota / Kab</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-12 cl-xl-12 mb-5">
+                                    <div class="form-floating form-floating-outline">
+                                        <textarea class="form-control h-px-100" name="alamat_lengkap" id="alamat_lengkap"
+                                            placeholder="Masukkan Alamat lengkap"></textarea>
+                                        <label>Alamat Lengkap</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-12 cl-xl-12 mb-5">
+                                    <div class="form-floating form-floating-outline">
                                         <input type="text" class="form-control" id="username" name="username"
                                             placeholder="Enter your username" autofocus />
                                         <label for="username">Username</label>
@@ -98,7 +163,8 @@
                                     <div class="form-password-toggle">
                                         <div class="input-group input-group-merge">
                                             <div class="form-floating form-floating-outline">
-                                                <input type="password" id="password" class="form-control" name="password"
+                                                <input type="password" id="password" class="form-control"
+                                                    name="password"
                                                     placeholder="&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;&#xb7;"
                                                     aria-describedby="password" />
                                                 <label for="password">Password</label>
@@ -146,5 +212,42 @@
 @endsection
 
 @section('js')
+    <script src="{{ asset('/assets/vendor/libs/select2/select2.js') }}"></script>
+    <script src="{{ asset('/assets/vendor/libs/moment/moment.js') }}"></script>
+    <script src="{{ asset('/assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>
     <script src="{{ asset('/assets/js/pages-auth.js') }}"></script>
+    <script>
+        const flatpickrDate = document.querySelector('#flatpickr-date')
+        if (flatpickrDate) {
+            flatpickrDate.flatpickr({
+                monthSelectorType: 'static'
+            });
+        }
+
+        var select_prov = document.querySelector('#provinsi')
+        var select_kab = document.querySelector('#kab_kota')
+        select_prov.addEventListener('change', async function(e) {
+            var id = e.target.options[event.target.selectedIndex].dataset.id
+            var res = dxAjax(`/register/getKota`, {
+                id: id
+            }, 'GET')
+            if (res.resCode == 200) {
+                select_kab.innerHTML = `<option value="">-- Pilih Kota / Kab --</option>`
+                res.data.forEach(kota => {
+                    select_kab.innerHTML +=
+                        `<option value="${kota.name}">${kota.name}</option>`
+                })
+            } else {
+                Swal.fire({
+                    title: 'Error!',
+                    text: res.message,
+                    icon: 'error',
+                    customClass: {
+                        confirmButton: 'btn btn-primary waves-effect waves-light'
+                    },
+                    buttonsStyling: false
+                });
+            }
+        })
+    </script>
 @endsection

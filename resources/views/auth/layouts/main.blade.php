@@ -36,6 +36,7 @@
     <!-- Vendors CSS -->
     <link rel="stylesheet" href="{{ asset('/assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
     <link rel="stylesheet" href="{{ asset('/assets/vendor/libs/typeahead-js/typeahead.css') }}" />
+    <link rel="stylesheet" href="{{ asset('/assets/vendor/libs/sweetalert2/sweetalert2.css') }}" />
     <!-- Vendor -->
     <link rel="stylesheet" href="{{ asset('/assets/vendor/libs/@form-validation/form-validation.css') }}" />
 
@@ -67,7 +68,8 @@
     <script src="{{ asset('/assets/vendor/libs/i18n/i18n.js') }}"></script>
     <script src="{{ asset('/assets/vendor/libs/typeahead-js/typeahead.js') }}"></script>
     <script src="{{ asset('/assets/vendor/js/menu.js') }}"></script>
-
+    <script src="{{ asset('/assets/vendor/libs/block-ui/block-ui.js') }}"></script>
+    <script src="{{ asset('/assets/vendor/libs/sweetalert2/sweetalert2.js') }}"></script>
     <!-- endbuild -->
 
     <!-- Vendors JS -->
@@ -77,7 +79,7 @@
 
     <!-- Main JS -->
     <script src="{{ asset('/assets/js/main.js') }}"></script>
-
+    <script src="{{ asset('/assets/js/ajax.js') }}"></script>
     <!-- Page JS -->
     @yield('js')
 </body>

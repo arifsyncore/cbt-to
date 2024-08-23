@@ -45,6 +45,7 @@ Route::get('/login', [LoginController::class, 'showLogin'])->name('login');
 Route::post('post-login-member', [LoginController::class, 'login'])->name('post-login');
 // register
 Route::get('/register', [RegisterController::class, 'showRegister'])->name('daftar');
+Route::get('/register/getKota', [RegisterController::class, 'getKota']);
 Route::post('/post-register-member', [RegisterController::class, 'register'])->name('post-register');
 
 Route::group(['middleware' => ['auth', 'role:1,2']], function () {
