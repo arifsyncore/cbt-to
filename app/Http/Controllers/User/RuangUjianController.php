@@ -102,7 +102,11 @@ class RuangUjianController extends Controller
 
     public function hasil(Request $request)
     {
-        $data = TRuangUjian::with('soalto', 'sesiuser')->where('status', 'Selesai')->where('id', $request->id)->first();
+        $data = TRuangUjian::with('soalto', 'sesiuser')
+            ->where('status', 'Selesai')
+            ->where('id', $request->id)
+            ->where('id_user', Auth::user()->id)
+            ->first();
         if (!$data) {
             return redirect()->route('ruang-ujian');
         }
@@ -132,126 +136,140 @@ class RuangUjianController extends Controller
 
     public function loadSoal(Request $request)
     {
-        // try {
-        $ruang_ujian = TRuangUjian::where('id', $request->id_ruang)->first();
-        //tab nonor
-        $jenis = $ruang_ujian->soalto->soal->jenis->detail;
-        $tabArray = array();
-        $nomor = array();
-        foreach ($jenis as $key => $value) {
-            $tabs = TSoalSesi::where('id_ruang_ujian', $request->id_ruang)
-                ->where('id_user', Auth::user()->id)
-                ->where('id_jenis_det', $value->id)
-                ->orderBy('id_jenis_det', 'ASC')
-                ->get();
-            $detTabArray = array();
-            foreach ($tabs as $key => $tab) {
-                $detTabArray[] = [
-                    'id' => $tab->id,
-                    'no' => $tab->no,
-                    'status' => $tab->status
+        try {
+            $ruang_ujian = TRuangUjian::where('id', $request->id_ruang)->first();
+            //tab nonor
+            $jenis = $ruang_ujian->soalto->soal->jenis->detail;
+            $tabArray = array();
+            $nomor = array();
+            foreach ($jenis as $key => $value) {
+                $tabs = TSoalSesi::where('id_ruang_ujian', $request->id_ruang)
+                    ->where('id_user', Auth::user()->id)
+                    ->where('id_jenis_det', $value->id)
+                    ->orderBy('id_jenis_det', 'ASC')
+                    ->get();
+                $detTabArray = array();
+                $nilai = 0;
+                foreach ($tabs as $key => $tab) {
+                    $detTabArray[] = [
+                        'id' => $tab->id,
+                        'no' => $tab->no,
+                        'status' => $tab->status
+                    ];
+                    if ($tab->soal->jenissoal->type_jenis == 'benar_salah') {
+                        $bobotSoal = $tab->jenis->bobot_soal;
+                        $jml_soal = $tab->jenis->jml_soal;
+                        $nilai_soal = $bobotSoal / $jml_soal;
+                        if ($tab->jawaban == $tab->soal->jawaban) {
+                            $nilai += $nilai_soal;
+                        }
+                    } else {
+                        $nilai_soal = $tab->soal->nilaijawaban->where('opsi', $tab->jawaban)->first();
+                        $nilai += $nilai_soal->nilai;
+                    }
+                    $nomor[] = $tab->no;
+                }
+                $tabArray[] = [
+                    'jenis' => $value->nama,
+                    'detailTab' => $detTabArray,
+                    'nilai' => $nilai,
                 ];
-                $nomor[] = $tab->no;
             }
-            $tabArray[] = [
-                'jenis' => $value->nama,
-                'detailTab' => $detTabArray
-            ];
-        }
-        $viewTab = view('user.ruang-cbt.components.tab-soal', compact('tabArray'))->render();
-        $id_soal_pertama = $tabArray[0]['detailTab'][0]['no'];
-        $sesi = TSesiUser::where('id', $request->id_sesi)
-            ->where('id_user', Auth::user()->id)
-            ->where('id_ruang_ujian', $request->id_ruang)
-            ->first();
+            $viewTab = view('user.ruang-cbt.components.tab-soal', compact('tabArray'))->render();
+            $viewNilaiSub = view('user.ruang-ujian.components.nilai-persub', compact('tabArray'))->render();
+            $id_soal_pertama = $tabArray[0]['detailTab'][0]['no'];
+            $sesi = TSesiUser::where('id', $request->id_sesi)
+                ->where('id_user', Auth::user()->id)
+                ->where('id_ruang_ujian', $request->id_ruang)
+                ->first();
 
-        $id_soal_pertama = $request->nomor == null ? $id_soal_pertama : $request->nomor;
-        $soal = TSoalSesi::with('soal', 'jenis')->where('no', $id_soal_pertama)->where('id_sesi', $sesi->id)->first();
-        if (round($soal->soal->banksoal->jml_opsi_jwb) == 3) {
-            $opsi = [
-                [
-                    'opsi' =>  $soal->soal->opsi_a,
-                    'value' => 'A'
-                ],
-                [
-                    'opsi' =>  $soal->soal->opsi_b,
-                    'value' => 'B'
-                ],
-                [
-                    'opsi' =>  $soal->soal->opsi_c,
-                    'value' => 'C'
-                ],
+            $id_soal_pertama = $request->nomor == null ? $id_soal_pertama : $request->nomor;
+            $soal = TSoalSesi::with('soal', 'jenis')->where('no', $id_soal_pertama)->where('id_sesi', $sesi->id)->first();
+            if (round($soal->soal->banksoal->jml_opsi_jwb) == 3) {
+                $opsi = [
+                    [
+                        'opsi' =>  $soal->soal->opsi_a,
+                        'value' => 'A'
+                    ],
+                    [
+                        'opsi' =>  $soal->soal->opsi_b,
+                        'value' => 'B'
+                    ],
+                    [
+                        'opsi' =>  $soal->soal->opsi_c,
+                        'value' => 'C'
+                    ],
+                ];
+            } else if (round($soal->soal->banksoal->jml_opsi_jwb) == 4) {
+                $opsi = [
+                    [
+                        'opsi' =>  $soal->soal->opsi_a,
+                        'value' => 'A'
+                    ],
+                    [
+                        'opsi' =>  $soal->soal->opsi_b,
+                        'value' => 'B'
+                    ],
+                    [
+                        'opsi' =>  $soal->soal->opsi_c,
+                        'value' => 'C'
+                    ],
+                    [
+                        'opsi' =>  $soal->soal->opsi_d,
+                        'value' => 'D'
+                    ],
+                ];
+            } else if (round($soal->soal->banksoal->jml_opsi_jwb) == 5) {
+                $opsi = [
+                    [
+                        'opsi' =>  $soal->soal->opsi_a,
+                        'value' => 'A'
+                    ],
+                    [
+                        'opsi' =>  $soal->soal->opsi_b,
+                        'value' => 'B'
+                    ],
+                    [
+                        'opsi' =>  $soal->soal->opsi_c,
+                        'value' => 'C'
+                    ],
+                    [
+                        'opsi' =>  $soal->soal->opsi_d,
+                        'value' => 'D'
+                    ],
+                    [
+                        'opsi' =>  $soal->soal->opsi_e,
+                        'value' => 'E'
+                    ],
+                ];
+            }
+            if (count($soal->soal->nilaijawaban) > 0) {
+                $nilai_jawaban = $soal->soal->nilaijawaban->where('opsi', $soal->jawaban)->first();
+                $nilai_jawaban = round($nilai_jawaban->nilai);
+            } else {
+                $nilai_jawaban = 0;
+            }
+            $pembahasan = $soal->soal->pembahasan->where('id_soal', $soal->soal->id)->first();
+            $soalArr = [
+                'id' => $soal->id,
+                'no' => $soal->no,
+                'soal' => $soal->soal->soal,
+                'jml_opsi' => round($soal->soal->banksoal->jml_opsi_jwb),
+                'jawaban' => $soal->jawaban,
+                'jawaban_benar' => $soal->soal->jawaban,
+                'type_jenis' => $soal->jenis->type_jenis,
+                'opsi' => $opsi,
+                'nilai_jawaban' => round($nilai_jawaban),
+                'deskripsi' => $pembahasan->pembahasan,
+                'gambar' => $pembahasan->gambar,
+                'url_video' => $pembahasan->url_video,
             ];
-        } else if (round($soal->soal->banksoal->jml_opsi_jwb) == 4) {
-            $opsi = [
-                [
-                    'opsi' =>  $soal->soal->opsi_a,
-                    'value' => 'A'
-                ],
-                [
-                    'opsi' =>  $soal->soal->opsi_b,
-                    'value' => 'B'
-                ],
-                [
-                    'opsi' =>  $soal->soal->opsi_c,
-                    'value' => 'C'
-                ],
-                [
-                    'opsi' =>  $soal->soal->opsi_d,
-                    'value' => 'D'
-                ],
-            ];
-        } else if (round($soal->soal->banksoal->jml_opsi_jwb) == 5) {
-            $opsi = [
-                [
-                    'opsi' =>  $soal->soal->opsi_a,
-                    'value' => 'A'
-                ],
-                [
-                    'opsi' =>  $soal->soal->opsi_b,
-                    'value' => 'B'
-                ],
-                [
-                    'opsi' =>  $soal->soal->opsi_c,
-                    'value' => 'C'
-                ],
-                [
-                    'opsi' =>  $soal->soal->opsi_d,
-                    'value' => 'D'
-                ],
-                [
-                    'opsi' =>  $soal->soal->opsi_e,
-                    'value' => 'E'
-                ],
-            ];
+            $maxNo = max($nomor);
+            $viewSoal = view('user.ruang-ujian.components.detail', compact('soalArr', 'maxNo'))->render();
+            return ['status' => 200, 'dataTab' => $viewTab, 'dataSoal' => $viewSoal, 'dataNilaiSub' => $viewNilaiSub];
+        } catch (\Throwable $th) {
+            return ['status' => 500, 'message' => 'Terdapat kesalahan, harap hubungi admin'];
         }
-        if (count($soal->soal->nilaijawaban) > 0) {
-            $nilai_jawaban = $soal->soal->nilaijawaban->where('opsi', $soal->jawaban)->first();
-            $nilai_jawaban = round($nilai_jawaban->nilai);
-        } else {
-            $nilai_jawaban = 0;
-        }
-        $pembahasan = $soal->soal->pembahasan->where('id_soal', $soal->soal->id)->first();
-        $soalArr = [
-            'id' => $soal->id,
-            'no' => $soal->no,
-            'soal' => $soal->soal->soal,
-            'jml_opsi' => round($soal->soal->banksoal->jml_opsi_jwb),
-            'jawaban' => $soal->jawaban,
-            'jawaban_benar' => $soal->soal->jawaban,
-            'type_jenis' => $soal->jenis->type_jenis,
-            'opsi' => $opsi,
-            'nilai_jawaban' => round($nilai_jawaban),
-            'deskripsi' => $pembahasan->pembahasan,
-            'gambar' => $pembahasan->gambar,
-            'url_video' => $pembahasan->url_video,
-        ];
-        $maxNo = max($nomor);
-        $viewSoal = view('user.ruang-ujian.components.detail', compact('soalArr', 'maxNo'))->render();
-        return ['status' => 200, 'dataTab' => $viewTab, 'dataSoal' => $viewSoal];
-        // } catch (\Throwable $th) {
-        //     return ['status' => 500, 'message' => 'Terdapat kesalahan, harap hubungi admin'];
-        // }
     }
 
     public function hasilJenis(Request $request)

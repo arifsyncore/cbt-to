@@ -7,6 +7,7 @@ use App\Models\user\TRuangUjian;
 use App\Models\user\TSoalSesi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Yajra\DataTables\DataTables;
 
 class DashboardController extends Controller
 {
@@ -81,6 +82,37 @@ class DashboardController extends Controller
             'ujian' => $ujianArr,
             'detail' => $jenisArr,
         ];
+    }
+
+    public function getNilai()
+    {
+        $data = TRuangUjian::with('soalto', 'soalsesi')->where('id_user', Auth::user()->id)->where('status', 'Selesai')->get();
+        return DataTables::of($data)
+            ->addColumn('kode', function ($data) {
+                return $data->soalto ? $data->soalto->soal->kode : '';
+            })
+            ->addColumn('nama_soal', function ($data) {
+                return $data->soalto ? $data->soalto->nama : '';
+            })
+            ->addColumn('aksi', function ($data) {
+                $nilai = 0;
+                foreach ($data->soalsesi as $key => $sesi) {
+                    if ($sesi->soal->jenissoal->type_jenis == 'benar_salah') {
+                        $bobotSoal = $sesi->jenis->bobot_soal;
+                        $jml_soal = $sesi->jenis->jml_soal;
+                        $nilai_soal = $bobotSoal / $jml_soal;
+                        if ($sesi->jawaban == $sesi->soal->jawaban) {
+                            $nilai += $nilai_soal;
+                        }
+                    } else {
+                        $nilai_soal = $sesi->soal->nilaijawaban->where('opsi', $sesi->jawaban)->first();
+                        $nilai += $nilai_soal->nilai;
+                    }
+                }
+                $button = "<a href='/ruang-ujian/hasil?id=$data->id'>$nilai</a>";
+                return $button;
+            })->rawColumns(['aksi'])
+            ->make(true);
     }
 
     /**

@@ -26,6 +26,7 @@
     var id_sesi = "{!! $data->sesiuser->id !!}"
     var fieldsTab = document.querySelector('#field_tab')
     var fieldsSoal = document.querySelector('#field_soal')
+    var fieldsNilaiSub = document.querySelector('#nilai-persub')
     document.addEventListener('DOMContentLoaded', async () => {
         loadsoal(id_ruang_ujian, id_sesi, nomor = null)
     })
@@ -39,7 +40,18 @@
         if (res.status == 200) {
             fieldsTab.innerHTML = res.dataTab
             fieldsSoal.innerHTML = res.dataSoal
+            fieldsNilaiSub.innerHTML = res.dataNilaiSub
             pageSoal()
+        } else {
+            Swal.fire({
+                title: 'Error!',
+                text: res.message,
+                icon: 'error',
+                customClass: {
+                    confirmButton: 'btn btn-primary waves-effect waves-light'
+                },
+                buttonsStyling: false
+            });
         }
     }
 

@@ -13,6 +13,7 @@ use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\LanggananController;
 use App\Http\Controllers\SocialiteController;
 use App\Http\Controllers\User\PeringkatController;
+use App\Http\Controllers\User\ProfilController;
 use App\Http\Controllers\User\RuangUjianController;
 use App\Http\Controllers\User\UjianController;
 use App\Http\Controllers\User\UserController;
@@ -62,6 +63,7 @@ Route::get('/test', function () {
 Route::group(['middleware' => ['auth', 'role:1,2']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
     Route::get('/dashboard/getChart', [DashboardController::class, 'getChart']);
+    Route::get('/dashboard/nilai', [DashboardController::class, 'getNilai']);
 });
 
 Route::group(['middleware' => ['auth', 'role:1']], function () {
@@ -130,4 +132,6 @@ Route::group(['middleware' => ['auth', 'role:2']], function () {
     Route::get('/detail-pesanan', [LanggananController::class, 'detailPesanan'])->name('detail-pesanan');
     Route::get('/detail-pesanan/bayar', [LanggananController::class, 'bayar']);
     Route::get('/bayar-berhasil/{id}', [LanggananController::class, 'bayarBerhasil'])->name('bayar-berhasil');
+    // profil
+    Route::get('/profil', [ProfilController::class, 'index'])->name('profil');
 });

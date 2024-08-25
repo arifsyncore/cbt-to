@@ -128,6 +128,9 @@
                         </div>
                     </div> --}}
                     <div class="row">
+                        <div class="col-12 col-md-12 col-xl-12 col-sm-12">
+                            <div id="nilai-persub"></div>
+                        </div>
                         <div class="col-9 col-md-9 col-xl-9 col-sm-12">
                             <div id="field_soal"></div>
                         </div>
