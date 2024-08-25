@@ -107,6 +107,12 @@
                     <div data-i18n="Peringkat">Peringkat</div>
                 </a>
             </li>
+            <li class="menu-item {{ Request::is('detail-pesanan') ? 'active' : '' }}">
+                <a href="{{ route('detail-pesanan') }}" class="menu-link">
+                    <i class="menu-icon tf-icons ri-money-dollar-circle-line"></i>
+                    <div data-i18n="Langganan">Langganan</div>
+                </a>
+            </li>
         @endif
     </ul>
 </aside>

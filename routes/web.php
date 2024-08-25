@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LandingPageController;
+use App\Http\Controllers\LanggananController;
 use App\Http\Controllers\SocialiteController;
 use App\Http\Controllers\User\PeringkatController;
 use App\Http\Controllers\User\RuangUjianController;
@@ -51,6 +52,12 @@ Route::post('/post-register-member', [RegisterController::class, 'register'])->n
 // login google
 Route::get('/login/google/redirect', [SocialiteController::class, 'redirect'])->name('redirect');
 Route::get('/login/google/callback', [SocialiteController::class, 'callback'])->middleware(['guest'])->name('callback');
+// langganan
+Route::get('/langganan', [LanggananController::class, 'index'])->name('langganan');
+
+Route::get('/test', function () {
+    return view('test');
+});
 
 Route::group(['middleware' => ['auth', 'role:1,2']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
@@ -118,4 +125,9 @@ Route::group(['middleware' => ['auth', 'role:2']], function () {
     Route::get('/peringkat/listperingkat/{id}', [PeringkatController::class, 'listPeringkat']);
     Route::get('/peringkat/detail-soal', [PeringkatController::class, 'detailSoal']);
     Route::get('/peringkat/listperingkat/detail/{data}', [PeringkatController::class, 'listPeringkatDetail']);
+    // beli langganan
+    Route::get('/langganan/daftar-langganan', [LanggananController::class, 'daftarLangganan']);
+    Route::get('/detail-pesanan', [LanggananController::class, 'detailPesanan'])->name('detail-pesanan');
+    Route::get('/detail-pesanan/bayar', [LanggananController::class, 'bayar']);
+    Route::get('/bayar-berhasil/{id}', [LanggananController::class, 'bayarBerhasil'])->name('bayar-berhasil');
 });

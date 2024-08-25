@@ -120,10 +120,29 @@
                                                     </div>
                                                 </div>
                                                 <div class="flex-grow-1">
-                                                    <span class="fw-medium d-block small">John Doe</span>
-                                                    <small class="text-muted">Admin</small>
+                                                    <span
+                                                        class="fw-medium d-block small">{{ Auth::user()->name }}</span>
+                                                    <small class="text-muted">-</small>
                                                 </div>
                                             </div>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <div class="dropdown-divider"></div>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="pages-profile-user.html">
+                                            <i class="ri-user-3-line ri-22px me-3"></i><span
+                                                class="align-middle">Profil</span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <div class="dropdown-divider"></div>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="{{ route('langganan') }}">
+                                            <i class="ri-money-dollar-circle-line ri-22px me-3"></i><span
+                                                class="align-middle">Langganan</span>
                                         </a>
                                     </li>
                                     <li>
