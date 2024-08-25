@@ -109,6 +109,15 @@
                                 <span>Buat Akun</span>
                             </a>
                         </p>
+                        <div class="divider my-5">
+                            <div class="divider-text">Atau</div>
+                        </div>
+                        <div class="d-flex justify-content-center gap-2">
+                            <a href="{{ route('redirect') }}"
+                                class="btn btn-icon rounded-circle btn-text-google-plus waves-effect waves-light">
+                                <i class="tf-icons ri-google-fill"></i>
+                            </a>
+                        </div>
                     </div>
                 </div>
                 <!-- /Login -->

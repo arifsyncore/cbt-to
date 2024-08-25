@@ -10,6 +10,7 @@ use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LandingPageController;
+use App\Http\Controllers\SocialiteController;
 use App\Http\Controllers\User\PeringkatController;
 use App\Http\Controllers\User\RuangUjianController;
 use App\Http\Controllers\User\UjianController;
@@ -47,6 +48,9 @@ Route::post('post-login-member', [LoginController::class, 'login'])->name('post-
 Route::get('/register', [RegisterController::class, 'showRegister'])->name('daftar');
 Route::get('/register/getKota', [RegisterController::class, 'getKota']);
 Route::post('/post-register-member', [RegisterController::class, 'register'])->name('post-register');
+// login google
+Route::get('/login/google/redirect', [SocialiteController::class, 'redirect'])->name('redirect');
+Route::get('/login/google/callback', [SocialiteController::class, 'callback'])->middleware(['guest'])->name('callback');
 
 Route::group(['middleware' => ['auth', 'role:1,2']], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
