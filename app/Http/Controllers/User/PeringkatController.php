@@ -76,9 +76,7 @@ class PeringkatController extends Controller
         $data = $peringkatArr->sortByDesc('skor');
         $data = $data->values()->all();
         return DataTables::of($data)
-            ->addColumn('no', function ($data) {
-                return $data['no'];
-            })
+            ->addIndexColumn()
             ->addColumn('nama', function ($data) {
                 return $data['nama'];
             })
@@ -140,9 +138,7 @@ class PeringkatController extends Controller
         $data = $peringkatArr->sortByDesc('skor');
         $data = $data->values()->all();
         return DataTables::of($data)
-            ->addColumn('no', function ($data) {
-                return $data['no'];
-            })
+            ->addIndexColumn()
             ->addColumn('nama', function ($data) {
                 return $data['nama'];
             })

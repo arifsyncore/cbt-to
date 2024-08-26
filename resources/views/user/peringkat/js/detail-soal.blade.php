@@ -20,7 +20,7 @@
                     "sLengthMenu": "Tampilkan _MENU_ entri",
                 },
                 columns: [{
-                        data: 'no'
+                        data: 'DT_RowIndex'
                     },
                     {
                         data: 'nama'

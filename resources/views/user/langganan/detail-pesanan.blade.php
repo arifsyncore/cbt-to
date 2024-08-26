@@ -31,7 +31,8 @@
                                 @if ($data->status == 'Belum Bayar')
                                     <span class="badge bg-label-warning">Silahkan melakukan pembayaran</span>
                                     <button type="button" data-id="{{ $data->id }}"
-                                        class="btn btn-danger waves-effect waves-light btn-bayar" id="pay-button">Bayar
+                                        class="btn btn-danger waves-effect waves-light btn-bayar" id="pay-button"
+                                        onclick="payment('{{ $data->snap_token }}')">Bayar
                                         Sekarang</button>
                                 @else
                                 @endif
@@ -58,42 +59,55 @@
 @section('js')
     <script src="https://app.sandbox.midtrans.com/snap/snap.js" data-client-key="{{ env('MIDTRANS_CLIENT_KEY') }}"></script>
     <script>
-        const btnBayar = document.querySelector('.btn-bayar')
-        if (btnBayar) {
-            btnBayar.addEventListener('click', function() {
-                var id = btnBayar.dataset.id
-                var res = dxAjax('/detail-pesanan/bayar', {
-                    id: id
-                }, 'GET')
-                if (res.status == 200) {
-                    bayar(res.data)
+        // const btnBayar = document.querySelector('.btn-bayar')
+        // if (btnBayar) {
+        //     btnBayar.addEventListener('click', function() {
+        //         // var id = btnBayar.dataset.id
+        //         // var res = dxAjax('/detail-pesanan/bayar', {
+        //         //     id: id
+        //         // }, 'GET')
+        //         // if (res.status == 200) {
+        //         bayar(res.data)
+        //         // }
+        //     })
+
+        //     function bayar(data) {
+        //         snap.pay(data.token, {
+        //             // Optional
+        //             onSuccess: function(result) {
+        //                 /* You may add your own js here, this is just example */
+        //                 // document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+        //                 console.log(result);
+        //                 // window.location.href = `/bayar-berhasil?id=${data.id}`
+        //             },
+        //             // Optional
+        //             onPending: function(result) {
+        //                 /* You may add your own js here, this is just example */
+        //                 // document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+        //                 console.log(result);
+        //             },
+        //             // Optional
+        //             onError: function(result) {
+        //                 /* You may add your own js here, this is just example */
+        //                 // document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
+        //                 console.log(result);
+        //             }
+        //         });
+        //     }
+        // }
+
+        function payment(n) {
+            snap.pay(n, {
+                onSuccess: function() {
+                    window.location = "/detail-pesanan"
+                },
+                onPending: function() {
+                    window.location = "/detail-pesanan"
+                },
+                onError: function() {
+                    window.location = "/detail-pesanan"
                 }
             })
-
-            function bayar(data) {
-                snap.pay(data.token, {
-                    // Optional
-                    onSuccess: function(result) {
-                        /* You may add your own js here, this is just example */
-                        // document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-                        console.log(result);
-                        // window.location.href = `/bayar-berhasil?id=${data.id}`
-                        window.location.href = '{{ route('bayar-berhasil', $data->id) }}'
-                    },
-                    // Optional
-                    onPending: function(result) {
-                        /* You may add your own js here, this is just example */
-                        // document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-                        console.log(result);
-                    },
-                    // Optional
-                    onError: function(result) {
-                        /* You may add your own js here, this is just example */
-                        // document.getElementById('result-json').innerHTML += JSON.stringify(result, null, 2);
-                        console.log(result);
-                    }
-                });
-            }
         }
     </script>
 @endsection

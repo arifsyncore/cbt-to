@@ -22,12 +22,33 @@ class LanggananController extends Controller
     {
         $pesanan = TPesanan::where('id_user', Auth::user()->id)->first();
         if (!$pesanan) {
+            \Midtrans\Config::$serverKey = config('midtrans.server_key');
+            \Midtrans\Config::$isProduction = config('midtrans.is_production');
+            \Midtrans\Config::$isSanitized = config('midtrans.is_sanitized');
+            \Midtrans\Config::$is3ds = config('midtrans.is_3ds');
+
             DB::transaction(function () use ($pesanan) {
-                $pesanan = FuncHelper::dxInsert(new TPesanan(), [
+                $pesan = FuncHelper::dxInsert(new TPesanan(), [
                     'id_user' => Auth::user()->id,
-                    'no_pesanan' => $this->noPesanan(),
+                    'no_pesanan' => 'INV' . rand(),
                     'tanggal_pesanan' => date("Y-m-d H:i:s"),
                     'status' => 'Belum Bayar',
+                ]);
+
+                $params = array(
+                    'transaction_details' => array(
+                        'order_id' => $pesan->no_pesanan,
+                        'gross_amount' => 100000,
+                    ),
+                    'customer_details' => array(
+                        'first_name' => Auth::user()->name,
+                        'email' => Auth::user()->email,
+                    )
+                );
+
+                $snapToken = \Midtrans\Snap::getSnapToken($params);
+                TPesanan::where('id', $pesan->id)->update([
+                    'snap_token' => $snapToken,
                 ]);
             });
             return redirect()->route('detail-pesanan');
@@ -42,39 +63,36 @@ class LanggananController extends Controller
         return view('user.langganan.detail-pesanan', compact('data'));
     }
 
-    public function bayar(Request $request)
-    {
-        $pesanan = TPesanan::with('user')->where('id', $request->id)->first();
-        // Set your Merchant Server Key
-        \Midtrans\Config::$serverKey = config('midtrans.server_key');
-        // Set to Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
-        \Midtrans\Config::$isProduction = config('midtrans.is_production');
-        // Set sanitization on (default)
-        \Midtrans\Config::$isSanitized = config('midtrans.is_sanitized');
-        // Set 3DS transaction for credit card to true
-        \Midtrans\Config::$is3ds = config('midtrans.is_3ds');
+    // public function bayar(Request $request)
+    // {
+    //     $pesanan = TPesanan::with('user')->where('id', $request->id)->first();
 
-        $params = array(
-            'transaction_details' => array(
-                'order_id' => rand(),
-                'gross_amount' => 1000,
-            ),
-            'customer_details' => array(
-                'first_name' => Auth::user()->name,
-                'email' => Auth::user()->email,
-            )
-        );
+    //     \Midtrans\Config::$serverKey = config('midtrans.server_key');
+    //     \Midtrans\Config::$isProduction = config('midtrans.is_production');
+    //     \Midtrans\Config::$isSanitized = config('midtrans.is_sanitized');
+    //     \Midtrans\Config::$is3ds = config('midtrans.is_3ds');
 
-        $snapToken = \Midtrans\Snap::getSnapToken($params);
-        TPesanan::where('id', $pesanan->id)->update([
-            'snap_token' => $snapToken
-        ]);
-        $data = [
-            'id' => $pesanan->id,
-            'token' => $snapToken,
-        ];
-        return ['status' => 200, 'data' => $data];
-    }
+    //     $params = array(
+    //         'transaction_details' => array(
+    //             'order_id' => rand(),
+    //             'gross_amount' => 100000,
+    //         ),
+    //         'customer_details' => array(
+    //             'first_name' => Auth::user()->name,
+    //             'email' => Auth::user()->email,
+    //         )
+    //     );
+
+    //     $snapToken = \Midtrans\Snap::getSnapToken($params);
+    //     TPesanan::where('id', $pesanan->id)->update([
+    //         'snap_token' => $snapToken
+    //     ]);
+    //     $data = [
+    //         'id' => $pesanan->id,
+    //         'token' => $snapToken,
+    //     ];
+    //     return ['status' => 200, 'data' => $data];
+    // }
 
     public function bayarBerhasil($id)
     {

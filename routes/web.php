@@ -134,4 +134,5 @@ Route::group(['middleware' => ['auth', 'role:2']], function () {
     Route::get('/bayar-berhasil/{id}', [LanggananController::class, 'bayarBerhasil'])->name('bayar-berhasil');
     // profil
     Route::get('/profil', [ProfilController::class, 'index'])->name('profil');
+    Route::put('/profil/update-data-diri', [ProfilController::class, 'updateDataDiri']);
 });
