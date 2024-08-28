@@ -6,6 +6,7 @@ use App\Helpers\FuncHelper;
 use App\Http\Controllers\Controller;
 use App\Models\admin\MJenisUjianDet;
 use App\Models\admin\MUploadSoal;
+use App\Models\TJenisUser;
 use App\Models\user\TRuangUjian;
 use App\Models\user\TSesiUser;
 use App\Models\user\TSoalSesi;
@@ -75,6 +76,13 @@ class RuangUjianController extends Controller
 
     public function addRuangUjian(Request $request)
     {
+        $jenis_soal = MUploadSoal::where('id', $request->id)->first();
+        if ($jenis_soal->type_soal == 'Premium') {
+            $jenis_user = TJenisUser::where('id_user', Auth::user()->id)->first();
+            if ($jenis_user->jenis == 'Free') {
+                return redirect()->route('langganan');
+            }
+        }
         try {
             DB::transaction(function () use ($request) {
                 $checkExist = TRuangUjian::where('id_user', Auth::user()->id)

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Models\TJenisUser;
 use App\Models\TPesanan;
 use Illuminate\Http\Request;
 
@@ -33,6 +34,7 @@ class CallbackController extends Controller
         $fraud        = $notification->fraud_status;
 
         $data_pesanan = TPesanan::where('no_pesanan', $orderId)->first();
+        $jenis_user = TJenisUser::where('id_user', $data_pesanan->id_user)->first();
 
         if ($transaction == 'capture') {
 
@@ -55,6 +57,10 @@ class CallbackController extends Controller
                     $data_pesanan->update([
                         'status' => 'Sudah Bayar'
                     ]);
+
+                    $jenis_user->update([
+                        'jenis' => 'Premium'
+                    ]);
                 }
             }
         } elseif ($transaction == 'settlement') {
@@ -64,6 +70,10 @@ class CallbackController extends Controller
              */
             $data_pesanan->update([
                 'status' => 'Sudah Bayar'
+            ]);
+
+            $jenis_user->update([
+                'jenis' => 'Premium'
             ]);
         } elseif ($transaction == 'pending') {
 

@@ -128,16 +128,6 @@
                     el: '.swiper-pagination',
                     clickable: true
                 },
-                // breakpoints: {
-                //     992: {
-                //         slidesPerView: 4,
-                //         spaceBetween: 24
-                //     },
-                //     768: {
-                //         slidesPerView: 2,
-                //         spaceBetween: 24
-                //     }
-                // }
             });
         }
 

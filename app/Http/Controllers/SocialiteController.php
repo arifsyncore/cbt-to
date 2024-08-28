@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\FuncHelper;
+use App\Models\TJenisUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -32,6 +34,11 @@ class SocialiteController extends Controller
             ]);
 
             $newUser->save();
+
+            TJenisUser::create([
+                'id_user' => $newUser->id,
+                'jenis' => 'Free'
+            ]);
 
             // Login user yang baru dibuat
             auth('web')->login($newUser);

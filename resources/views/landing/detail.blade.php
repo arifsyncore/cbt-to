@@ -34,11 +34,7 @@
                                         Menit</span>
                                 </li>
                                 <li class="list-group-item">
-                                    @if ($data->type_soal == 'Free')
-                                        Harga : <span class="badge bg-label-success">Free</span>
-                                    @else
-                                        Harga : <span class="badge bg-label-success">0</span>
-                                    @endif
+                                    <span class="badge bg-label-success">{{ $data->type_soal }}</span>
                                 </li>
                             </ul>
                             <button type="button" data-id="{{ $data->id }}"

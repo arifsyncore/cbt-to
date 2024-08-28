@@ -44,7 +44,6 @@
     @else
     @endif
 @endsection
-
 @section('js')
     @include('js.dashboard')
 @endsection
