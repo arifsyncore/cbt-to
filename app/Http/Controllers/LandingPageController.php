@@ -19,7 +19,7 @@ class LandingPageController extends Controller
      */
     public function index()
     {
-        $bank_soal = MUploadSoal::with('soal')->get();
+        $bank_soal = MUploadSoal::with('soal')->orderBy('created_at', 'DESC')->limit(6)->get();
         $jenis_soal = MJenisUjian::with('detail')->get();
         return view('landing.index', compact(
             'bank_soal',

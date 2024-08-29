@@ -522,7 +522,7 @@ class BankSoalController extends Controller
     {
         try {
             Excel::import(new ImportSoal($request), $request->file('import'));
-            return ['status' => 200, 'message' => 'Berhasil import gambar'];
+            return ['status' => 200, 'message' => 'Berhasil import soal'];
         } catch (\Throwable $th) {
             return ['status' => 500, 'message' => 'Gagal import soal'];
         }
